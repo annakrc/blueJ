@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Übungs-BlueJ – Java Schritt für Schritt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFCFE; --grid:#DDE6F2; --ink:#1F3A93; --text:#1E2433; --muted:#5B6478; --card:#FFFFFF; --line:#C9D4E4;
+  --marker:#FFE45C; --marker-soft:#FFF6BF; --ok:#23804F; --ok-soft:#E3F4EA; --err:#C8352F; --err-soft:#FBE7E5;
+  --chrome:#E9EBEF; --chrome-2:#D7DBE2; --canvas:#FFFFFF; --cls:#F3C27A; --cls-b:#7A4E12; --cls-stripe:rgba(122,78,18,.22);
+  --obj:#B8322A; --obj-b:#7D1C16; --code:#FFFFFF; --comment:#6A7A5A; --kw:#8A2B7A;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131A29; --grid:#1D283D; --ink:#A9C0FF; --text:#E6EAF3; --muted:#9AA4B8; --card:#1A2336; --line:#2E3C58;
+    --marker:#8C7614; --marker-soft:#3A3413; --ok:#5CC98C; --ok-soft:#163022; --err:#FF8A80; --err-soft:#3A1E1E;
+    --chrome:#252D3D; --chrome-2:#323C50; --canvas:#1C2433; --cls:#C99A55; --cls-b:#F1CF98; --cls-stripe:rgba(40,25,5,.35);
+    --obj:#A73A33; --obj-b:#F0A29B; --code:#161E2D; --comment:#9DB38A; --kw:#E39AD6;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131A29; --grid:#1D283D; --ink:#A9C0FF; --text:#E6EAF3; --muted:#9AA4B8; --card:#1A2336; --line:#2E3C58;
+  --marker:#8C7614; --marker-soft:#3A3413; --ok:#5CC98C; --ok-soft:#163022; --err:#FF8A80; --err-soft:#3A1E1E;
+  --chrome:#252D3D; --chrome-2:#323C50; --canvas:#1C2433; --cls:#C99A55; --cls-b:#F1CF98; --cls-stripe:rgba(40,25,5,.35);
+  --obj:#A73A33; --obj-b:#F0A29B; --code:#161E2D; --comment:#9DB38A; --kw:#E39AD6;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.55;
+  background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+code,pre,.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+code{font-size:.9em;background:var(--marker-soft);padding:1px 4px;border-radius:4px}
+button{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 18px 50px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+h1{margin:0;font-size:28px;line-height:1.15;color:var(--ink)}
+.sub{margin:3px 0 0;color:var(--muted);font-size:15px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:15px}
+.tabs button[aria-current="true"]{background:var(--ink);color:var(--card)}
+.app{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:920px){.app{grid-template-columns:1fr}}
+
+/* guide */
+.guide{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);max-height:calc(100vh - 20px);overflow:auto}
+@media (max-width:920px){.guide{position:static;max-height:none}}
+.g-top{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted);margin-bottom:6px}
+.bar{height:8px;background:var(--grid);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--ink)}
+.guide h2{margin:0 0 8px;font-size:22px;line-height:1.25;color:var(--ink)}
+.guide p{margin:0 0 10px}
+.guide ol,.guide ul{margin:0 0 10px;padding-left:22px}
+.guide li{margin:4px 0}
+.guide pre{white-space:pre-wrap;word-break:break-word;background:var(--code);border:1px solid var(--line);border-left:5px solid var(--ink);border-radius:8px;padding:10px 12px;overflow-x:auto;font-size:14px;line-height:1.5;margin:6px 0 12px}
+.g-where{background:var(--marker-soft);border-left:5px solid var(--marker);padding:8px 12px;border-radius:6px;margin:0 0 10px}
+.g-real{font-size:14.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
+.g-btns{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.btn{border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:15px}
+.btn.primary{background:var(--ink);color:var(--card)}
+.btn.good{background:var(--ok);border-color:var(--ok);color:#fff}
+.g-done{background:var(--ok-soft);border-left:5px solid var(--ok);border-radius:8px;padding:10px 14px;margin-top:12px}
+.g-done b.head{color:var(--ok);display:block;font-size:18px;margin-bottom:4px}
+.g-sol{margin-top:10px}
+.linkbtn{background:none;border:none;color:var(--ink);text-decoration:underline;cursor:pointer;padding:4px 0;font-size:15px}
+.g-nav{display:flex;justify-content:space-between;margin-top:14px;font-size:14px}
+.uml{border:2px solid var(--text);background:var(--code);font-family:'JetBrains Mono',monospace;font-size:13.5px;margin:6px 0 12px;display:inline-block;min-width:260px}
+.uml .t{text-align:center;font-weight:600;padding:4px 8px;border-bottom:2px solid var(--text)}
+.uml .s{padding:3px 0;border-bottom:2px solid var(--text)}.uml .s:last-child{border-bottom:none}
+.uml .r{padding:1px 10px;white-space:pre}
+table.cheat{border-collapse:collapse;font-size:14.5px;margin:6px 0 10px;width:100%}
+table.cheat td{border-bottom:1px solid var(--line);padding:5px 6px;vertical-align:top}
+table.cheat td:first-child{font-family:'JetBrains Mono',monospace;font-size:13px;white-space:nowrap}
+
+/* BlueJ window */
+.bluej{position:relative;border:1px solid var(--chrome-2);border-radius:12px;overflow:hidden;background:var(--chrome);min-height:640px;display:flex;flex-direction:column}
+.titlebar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--chrome-2);font-size:14px;font-weight:700}
+.lights{display:flex;gap:6px}.lights i{width:11px;height:11px;border-radius:50%;background:#E0625A;display:block}.lights i:nth-child(2){background:#E2B53F}.lights i:nth-child(3){background:#5DB85C}
+.bj-body{display:flex;flex:1;min-height:0}
+.toolbar{display:flex;flex-direction:column;gap:8px;padding:12px 10px;width:138px;border-right:1px solid var(--chrome-2)}
+.toolbar button{background:var(--card);border:1px solid var(--chrome-2);border-radius:8px;padding:8px 6px;cursor:pointer;text-align:center;font-size:14.5px;line-height:1.2}
+.toolbar small{display:block;font-size:11.5px;color:var(--muted)}
+.canvas{flex:1;background:var(--canvas);padding:22px;display:flex;flex-wrap:wrap;gap:26px;align-content:flex-start;min-height:340px}
+.canvas .empty{color:var(--muted);font-size:15px;max-width:340px}
+.cls{width:160px;height:96px;background:var(--cls);border:2px solid var(--cls-b);border-radius:2px;cursor:pointer;display:flex;flex-direction:column;box-shadow:3px 3px 0 rgba(0,0,0,.15);user-select:none;-webkit-user-select:none;color:#2A1A04}
+.cls .cn{font-weight:700;text-align:center;padding:6px;border-bottom:2px solid var(--cls-b)}
+.cls .cb{flex:1}
+.cls.dirty .cb{background:repeating-linear-gradient(135deg,var(--cls-stripe) 0 6px,transparent 6px 12px)}
+.bench{background:var(--chrome);border-top:1px solid var(--chrome-2);min-height:112px;padding:12px 14px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;position:relative}
+.bench-label{position:absolute;left:14px;top:4px;font-size:12px;color:var(--muted)}
+.bench .hint{color:var(--muted);font-size:14px;margin-top:10px}
+.obj{background:var(--obj);color:#fff;border:2px solid var(--obj-b);border-radius:14px;padding:10px 14px;min-width:120px;text-align:center;cursor:pointer;margin-top:10px;font-size:14.5px;line-height:1.25;user-select:none;-webkit-user-select:none}
+.obj u{font-weight:700}
+.statusbar{padding:5px 12px;font-size:13.5px;color:var(--muted);border-top:1px solid var(--chrome-2);min-height:28px}
+@media (max-width:560px){.toolbar{width:104px}.cls{width:130px}}
+
+/* context menu */
+.menu{position:fixed;z-index:60;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:6px;min-width:230px;max-width:92vw}
+.menu button{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 10px;border-radius:6px;cursor:pointer;font-size:15px}
+.menu button:hover,.menu button:focus-visible{background:var(--marker-soft)}
+.menu .sig{font-family:'JetBrains Mono',monospace;font-size:13.5px}
+.menu hr{border:none;border-top:1px solid var(--line);margin:4px 0}
+.menu .note{font-size:13px;color:var(--muted);padding:6px 10px}
+
+/* windows inside BlueJ */
+.win{position:absolute;z-index:20;background:var(--card);border:1px solid var(--chrome-2);border-radius:10px;box-shadow:none;border:2px solid var(--chrome-2);display:flex;flex-direction:column;overflow:hidden}
+.win .wt{background:var(--chrome-2);padding:7px 12px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.edwin{inset:10px}
+.ed-tools{display:flex;gap:8px;padding:8px 10px;background:var(--chrome);border-bottom:1px solid var(--chrome-2);flex-wrap:wrap}
+.ed-tools button{background:var(--card);border:1px solid var(--chrome-2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:14.5px}
+.ed-tools button.main{border:2px solid var(--ink);font-weight:700;color:var(--ink)}
+.ed-main{flex:1;display:flex;min-height:180px;overflow:hidden;background:var(--code)}
+.gutter{width:44px;overflow:hidden;background:var(--chrome);border-right:1px solid var(--chrome-2);font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);text-align:right;position:relative}
+.gutter .gi{position:absolute;left:0;right:0;top:0;padding:8px 6px 8px 0}
+.gutter .gl{height:22px;line-height:22px}
+.gutter .gl.bad{background:var(--err);color:#fff}
+.ed-area{flex:1;position:relative;overflow:hidden}
+.ed-hl{position:absolute;left:0;right:0;height:22px;background:var(--err-soft);display:none;pointer-events:none}
+#edText{position:absolute;inset:0;width:100%;height:100%;resize:none;border:none;background:transparent;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14.5px;line-height:22px;padding:8px 10px;white-space:pre;overflow:auto;tab-size:4}
+#edText:focus{outline:none}
+.symbols{display:flex;flex-wrap:wrap;gap:5px;padding:6px 10px;background:var(--chrome);border-top:1px solid var(--chrome-2)}
+.symbols button{font-family:'JetBrains Mono',monospace;font-size:17px;min-width:40px;height:38px;border-radius:7px;border:1px solid var(--chrome-2);background:var(--card);cursor:pointer}
+.symbols span{font-size:12px;color:var(--muted);align-self:center;margin-left:4px}
+.ed-status{padding:8px 12px;font-size:14.5px;border-top:1px solid var(--chrome-2);max-height:42%;overflow:auto}
+.ed-status.ok{background:var(--ok-soft)}
+.ed-status.err{background:var(--err-soft)}
+.ed-status .em{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--err)}
+.ed-status .de{margin-top:4px}
+.dlg-back{position:absolute;inset:0;z-index:30;background:transparent;display:flex;align-items:center;justify-content:center;padding:14px}
+.dlg{position:relative;width:min(520px,100%);max-height:100%;overflow:auto}
+.dlg .db{padding:14px 16px}
+.dlg label{display:block;font-size:14px;margin:10px 0 3px}
+.dlg label .ty{font-family:'JetBrains Mono',monospace;color:var(--kw)}
+.dlg input{width:100%;font-family:'JetBrains Mono',monospace;font-size:16px;padding:9px 10px;border:2px solid var(--line);border-radius:8px;background:var(--code);color:var(--text)}
+.dlg .help{font-size:13px;color:var(--muted);margin-top:2px}
+.dlg .doc{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;white-space:pre-wrap;margin-bottom:8px}
+.dlg .sig{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600}
+.dlg .derr{color:var(--err);font-size:14.5px;margin-top:8px}
+.dlg .dbtns{display:flex;justify-content:flex-end;gap:8px;padding:10px 16px;border-top:1px solid var(--line);background:var(--chrome)}
+.insp{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:13.5px}
+.insp td{border-bottom:1px solid var(--line);padding:5px 6px}
+.odiag{display:inline-block;border:2px solid var(--text);border-radius:10px;overflow:hidden;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:13.5px;background:var(--code)}
+.odiag .t{padding:5px 12px;border-bottom:2px solid var(--text);text-align:center;font-weight:600;text-decoration:underline}
+.odiag .r{padding:2px 12px}
+.termwin{right:10px;bottom:10px;width:min(460px,calc(100% - 20px));height:220px}
+.termwin pre{flex:1;margin:0;padding:10px;overflow:auto;background:#10151F;color:#E8EDF7;font-size:14px}
+.pulse{animation:pulse 1s ease-in-out 3;position:relative;z-index:5}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,210,0,0)}50%{box-shadow:0 0 0 7px rgba(255,210,0,.95)}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none;outline:4px solid var(--marker)}}
+[hidden]{display:none!important}
+.reset{margin-top:10px;font-size:13px}
+.g-nav{flex-wrap:wrap;gap:8px;align-items:center}.jump{font-size:14px;color:var(--muted)}.jump select{font:inherit;font-size:14px;max-width:190px;padding:3px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Übungs-BlueJ</h1>
+      <p class="sub">Links steht, was du tun sollst. Rechts ist ein nachgebautes BlueJ, in dem du alles selbst ausprobierst.</p>
+    </div>
+    <nav class="tabs" aria-label="Missionen">
+      <button data-m="frosch">Mission 1: Frosch (mit Anleitung)</button>
+      <button data-m="scooter">Mission 2: Scooter (allein)</button>
+    </nav>
+  </header>
+  <div class="app">
+    <aside class="guide" id="guide" aria-live="polite"></aside>
+    <section class="bluej" id="bluej" aria-label="Übungs-BlueJ">
+      <div class="titlebar"><span class="lights"><i></i><i></i><i></i></span><span>BlueJ: Übungsprojekt</span></div>
+      <div class="bj-body">
+        <div class="toolbar">
+          <button id="btnNew">Neue Klasse…<small>New Class…</small></button>
+          <button id="btnCompileAll">Übersetzen<small>Compile</small></button>
+          <button id="btnTerm">Terminal<small>Terminal</small></button>
+        </div>
+        <div class="canvas" id="canvas"></div>
+      </div>
+      <div class="bench" id="bench"></div>
+      <div class="statusbar" id="status">Bereit.</div>
+
+      <div class="win edwin" id="editor" hidden>
+        <div class="wt"><span id="edTitle">Editor</span></div>
+        <div class="ed-tools">
+          <button class="main" id="edCompile">Übersetzen (Compile)</button>
+          <button id="edClose">Schließen (Close)</button>
+        </div>
+        <div class="ed-main">
+          <div class="gutter"><div class="gi" id="gutter"></div></div>
+          <div class="ed-area"><div class="ed-hl" id="edHl"></div>
+            <textarea id="edText" wrap="off" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="none" aria-label="Java-Code"></textarea>
+          </div>
+        </div>
+        <div class="symbols" id="edSyms"></div>
+        <div class="ed-status" id="edStatus"></div>
+      </div>
+
+      <div class="win termwin" id="terminal" hidden>
+        <div class="wt"><span>BlueJ: Terminal</span><span><button class="linkbtn" id="termClear">Löschen</button> <button class="linkbtn" id="termClose">Schließen</button></span></div>
+        <pre id="termOut"></pre>
+      </div>
+      <div id="dlgHost"></div>
+    </section>
+  </div>
+</div>
+<div class="menu" id="menu" hidden role="menu"></div>
+
+<script>
+/* =========================================================
+   Mini-Java: Lexer, Parser, Typprüfung, Interpreter
+   ========================================================= */
+const KEYWORDS=new Set(['public','private','protected','class','return','if','else','while','new','true','false','null','this','void','int','double','boolean','char','static','for']);
+const PRIM=['int','double','boolean','char','String'];
+function JErr(line,msg,de,fix){return {jerr:true,line,msg,de,fix};}
+function RtErr(name,de){return {rterr:true,name,de};}
+
+function lex(src){
+  const toks=[];let i=0,line=1,doc=null;const n=src.length;
+  const id0=c=>/[A-Za-z_$ÄÖÜäöüß]/.test(c), id1=c=>/[A-Za-z0-9_$ÄÖÜäöüß]/.test(c);
+  while(i<n){
+    const c=src[i];
+    if(c==='\n'){line++;i++;continue;}
+    if(/\s/.test(c)){i++;continue;}
+    if(c==='/'&&src[i+1]==='/'){while(i<n&&src[i]!=='\n')i++;continue;}
+    if(c==='/'&&src[i+1]==='*'){
+      const start=line,isDoc=src[i+2]==='*'&&src[i+3]!=='/';let j=i+2;
+      while(j<n&&!(src[j]==='*'&&src[j+1]==='/')){if(src[j]==='\n')line++;j++;}
+      if(j>=n) throw JErr(start,'unclosed comment','Ein Kommentar wurde mit /* geöffnet, aber nie mit */ geschlossen. Java hält deshalb den ganzen Rest für Kommentar.','Schreib */ ans Ende des Kommentars.');
+      if(isDoc) doc=src.slice(i+3,j);
+      i=j+2;continue;
+    }
+    const tok={line};
+    if(c==='"'){
+      let j=i+1,s='';
+      while(j<n&&src[j]!=='"'&&src[j]!=='\n'){ if(src[j]==='\\'&&j+1<n){const e=src[j+1];s+=e==='n'?'\n':e==='t'?'\t':e;j+=2;continue;} s+=src[j];j++; }
+      if(j>=n||src[j]!=='"') throw JErr(line,'unclosed string literal','Ein Text wurde mit " angefangen, aber nicht mit " beendet.','Setze am Ende des Textes noch ein " .');
+      tok.k='str';tok.v=s;i=j+1;
+    } else if(c==="'"){
+      let j=i+1,ch=src[j];
+      if(ch==='\\'){const e=src[j+1];ch=e==='n'?'\n':e;j+=2;} else j++;
+      if(src[j]!=="'"||ch===undefined) throw JErr(line,'unclosed character literal',"Zwischen einfachen Anführungszeichen ' ' darf nur EIN Zeichen stehen (Datentyp char).",'Für Text (mehrere Zeichen) nimm doppelte Anführungszeichen: "Hubert"');
+      tok.k='chr';tok.v=ch;i=j+1;
+    } else if(/[0-9]/.test(c)){
+      let j=i;while(j<n&&/[0-9]/.test(src[j]))j++;let d=false;
+      if(src[j]==='.'&&/[0-9]/.test(src[j+1]||'')){d=true;j++;while(j<n&&/[0-9]/.test(src[j]))j++;}
+      tok.k=d?'dbl':'int';tok.v=Number(src.slice(i,j));i=j;
+    } else if(id0(c)){
+      let j=i;while(j<n&&id1(src[j]))j++;tok.k='id';tok.v=src.slice(i,j);i=j;
+    } else {
+      const two=src.substr(i,2);
+      if(['==','!=','<=','>=','&&','||','++','--','+=','-='].includes(two)){tok.k='sym';tok.v=two;i+=2;}
+      else if('{}();,=+-*/%<>!.:[]'.includes(c)){tok.k='sym';tok.v=c;i++;}
+      else if('“”„'.includes(c)) throw JErr(line,"illegal character: '"+c+"'",'Das sind „schöne“ Anführungszeichen, wie sie das iPad automatisch macht. Java kennt nur die geraden: "','Ersetze das Zeichen durch ein gerades " (die Taste unten im Editor hilft).');
+      else throw JErr(line,"illegal character: '"+c+"'",'Dieses Zeichen kennt Java an dieser Stelle nicht: '+c,'Lösch das Zeichen.');
+    }
+    if(doc!==null){tok.doc=doc;doc=null;}
+    toks.push(tok);
+  }
+  toks.push({k:'eof',line});
+  return toks;
+}
+
+function makeParser(T){
+  let p=0;
+  const peek=(o=0)=>T[Math.min(p+o,T.length-1)], next=()=>T[p++];
+  const is=(v,o=0)=>{const t=peek(o);return (t.k==='sym'||t.k==='id')&&t.v===v;};
+  const prevLine=()=>p>0?T[p-1].line:1;
+  const eofErr=()=>JErr(T[T.length-1].line,'reached end of file while parsing','Der Code hört auf, aber mindestens eine { wurde nie mit } geschlossen.','Zähl deine Klammern: Jede { braucht eine }. Oft fehlt die } ganz am Ende der Klasse oder am Ende einer Methode.');
+  function expect(v){
+    if(is(v)) return next();
+    const t=peek();
+    if(t.k==='eof') throw eofErr();
+    if(v===';'){
+      if(is(',')&&T[p-1]&&T[p-1].k==='int') throw JErr(t.line,"';' expected",'Kommazahlen schreibt man in Java mit PUNKT, nicht mit Komma.','Schreib z.B. 5.7 statt 5,7');
+      throw JErr(prevLine(),"';' expected",'Am Ende von Zeile '+prevLine()+' fehlt ein Semikolon ;','Setze ein ; ans Ende von Zeile '+prevLine()+'. (Die Zeile mit dem Fehler ist oft die Zeile ÜBER der Stelle, wo Java stolpert.)');
+    }
+    if(v==='{') throw JErr(prevLine(),"'{' expected",'Hier muss eine geschweifte Klammer { stehen. Sie öffnet den Inhalt einer Klasse oder Methode.','Setze nach Zeile '+prevLine()+' ein { .');
+    if(v===')'){
+      if(is('=')) throw JErr(t.line,"')' expected",'Zum Vergleichen nimmt man in Java == (zwei Gleichheitszeichen). Ein einzelnes = heißt „speichern“.','Schreib == statt =');
+      throw JErr(t.line,"')' expected",'Hier fehlt eine schließende runde Klammer ).','Prüfe, ob jede ( auch eine ) hat. Mehrere Parameter trennt man mit Komma.');
+    }
+    if(v==='(') throw JErr(t.line,"'(' expected",'Hier muss eine runde Klammer ( stehen.','Nach einem Methodennamen kommen immer runde Klammern, auch wenn sie leer sind: ()');
+    throw JErr(t.line,"'"+v+"' expected",'Hier erwartet Java das Zeichen '+v,'');
+  }
+  function ident(what){
+    const t=peek();
+    if(t.k==='id'&&!KEYWORDS.has(t.v)) return next().v;
+    if(t.k==='eof') throw eofErr();
+    if(is(':')) throw JErr(t.line,'<identifier> expected','Der Doppelpunkt gehört nur ins Diagramm. In Java steht erst der Datentyp, dann der Name – ohne Doppelpunkt.','Beispiel: String pName statt pName : String');
+    throw JErr(t.line,'<identifier> expected','Hier erwartet Java einen Namen ('+what+').','Prüfe die Reihenfolge: Sichtbarkeit, Datentyp, Name. Beispiel: private int groesse;');
+  }
+  function parseClass(clsName){
+    if(is('public')) next();
+    const t0=peek();
+    if(t0.k==='id'&&t0.v!=='class'&&t0.v.toLowerCase()==='class') throw JErr(t0.line,'class, interface, enum, or record expected','Das Wort class schreibt man in Java klein.','Schreib: public class '+clsName);
+    if(!is('class')){ if(t0.k==='eof') throw JErr(t0.line,'class, interface, enum, or record expected','Der Editor ist leer. Es fehlt der Klassenkopf.','Die erste Code-Zeile heißt: public class '+clsName); throw JErr(t0.line,'class, interface, enum, or record expected','Ganz am Anfang muss der Kopf der Klasse stehen: public class '+clsName,'Alles andere (Attribute, Methoden) kommt danach zwischen { und }.'); }
+    const doc=peek().doc; next();
+    const nt=peek(); const name=ident('Klassenname');
+    if(name!==clsName) throw JErr(nt.line,'class '+name+' is public, should be declared in a file named '+name+'.java','Die Klasse heißt im Projekt „'+clsName+'“, im Code steht aber „'+name+'“. Beide müssen genau gleich sein, auch bei Groß- und Kleinschreibung.','Schreib: public class '+clsName);
+    expect('{');
+    const C={name,doc,fields:[],ctors:[],methods:[]};
+    while(!is('}')){ if(peek().k==='eof') throw eofErr(); parseMember(C); }
+    next();
+    if(peek().k!=='eof') throw JErr(peek().line,'class, interface, enum, or record expected','Nach der letzten } der Klasse steht noch Code. Alles muss INNERHALB der Klasse stehen.','Wahrscheinlich ist irgendwo eine } zu viel, oder eine Methode steht unter der letzten }.');
+    return C;
+  }
+  function parseMember(C){
+    const first=peek(); const doc=first.doc; let mod=null;
+    while(peek().k==='id'&&['public','private','protected'].includes(peek().v)) mod=next().v;
+    if(is('static')) throw JErr(peek().line,'static wird hier nicht unterstützt','Dieses Übungs-BlueJ kennt static nicht. Im Unterricht brauchst du es gerade nicht.','Lass das Wort static weg.');
+    const t=peek();
+    if(t.k==='eof') throw eofErr();
+    if(t.k==='id'&&t.v===C.name&&is('(',1)){ next(); const params=parseParams(); const body=parseBlock(); C.ctors.push({line:t.line,mod,params,body,doc}); return; }
+    if(t.k!=='id'||(KEYWORDS.has(t.v)&&!['int','double','boolean','char','void'].includes(t.v))){
+      if(is('return')||is('if')) throw JErr(t.line,'illegal start of type','Diese Anweisung steht direkt in der Klasse. Anweisungen dürfen nur INNERHALB einer Methode oder des Konstruktors stehen.','Schreib sie zwischen die { } einer Methode.');
+      throw JErr(t.line,'illegal start of type','Hier erwartet Java ein Attribut, einen Konstruktor oder eine Methode.','Prüfe, ob in der Zeile davor eine Klammer fehlt oder zu viel ist.');
+    }
+    if(is('(',1)){
+      if(t.v.toLowerCase()===C.name.toLowerCase()) throw JErr(t.line,'invalid method declaration; return type required','Soll das der Konstruktor sein? Er muss GENAU so heißen wie die Klasse: '+C.name,'Schreib: public '+C.name+'(…)');
+      throw JErr(t.line,'invalid method declaration; return type required','Vor dem Methodennamen „'+t.v+'“ fehlt der Rückgabetyp.','Schreib z.B. public void '+t.v+'() (gibt nichts zurück) oder public int '+t.v+'() / public String '+t.v+'() (gibt etwas zurück).');
+    }
+    if(is('=',1)||is('.',1)||is('++',1)) throw JErr(t.line,'<identifier> expected','Diese Zeile ist eine Anweisung (z.B. etwas speichern). Anweisungen dürfen nicht direkt in der Klasse stehen.','Schreib sie in den Konstruktor oder in eine Methode, also zwischen deren { und }.');
+    next(); const type=t.v;
+    const name=ident('Name');
+    if(is('(')){ const params=parseParams(); const body=parseBlock(); C.methods.push({line:t.line,mod,ret:type,name,params,body,doc}); return; }
+    let init=null; if(is('=')){next();init=parseExpr();}
+    expect(';');
+    C.fields.push({line:t.line,mod,type,name,init});
+  }
+  function parseParams(){
+    expect('('); const ps=[];
+    if(is(')')){next();return ps;}
+    while(true){
+      const tt=peek();
+      if(tt.k!=='id'||(KEYWORDS.has(tt.v)&&!PRIM.includes(tt.v))){ if(tt.k==='eof') throw eofErr(); throw JErr(tt.line,'<identifier> expected','In der runden Klammer muss ein Parameter stehen: erst Datentyp, dann Name.','Beispiel: (String pName, int pGroesse)'); }
+      next(); const pn=ident('Parametername'); ps.push({type:tt.v,name:pn,line:tt.line});
+      if(is(',')){next();continue;}
+      expect(')'); return ps;
+    }
+  }
+  function parseBlock(){ expect('{'); const st=[]; while(!is('}')){ if(peek().k==='eof') throw eofErr(); st.push(parseStmt()); } const end=next().line; return {k:'block',st,endLine:end}; }
+  function parseStmt(){
+    const t=peek();
+    if(is('{')) return parseBlock();
+    if(is(';')){next();return {k:'empty'};}
+    if(is('return')){next(); let e=null; if(!is(';')) e=parseExpr(); expect(';'); return {k:'ret',e,line:t.line};}
+    if(is('if')){next();expect('(');const c=parseExpr();expect(')');const a=parseStmt();let b=null;if(is('else')){next();b=parseStmt();}return {k:'if',c,a,b,line:t.line};}
+    if(is('while')){next();expect('(');const c=parseExpr();expect(')');const a=parseStmt();return {k:'while',c,a,line:t.line};}
+    if(is('System')&&is('.',1)){
+      next();next(); if(!is('out')) throw JErr(peek().line,'cannot find symbol','Meintest du System.out.println(…)?','Schreib: System.out.println("Text");');
+      next(); expect('.'); const m=peek();
+      if(!(is('println')||is('print'))) throw JErr(m.line,'cannot find symbol - method '+m.v,'Meintest du println?','Schreib: System.out.println("Text");');
+      next(); expect('('); let e=null; if(!is(')')) e=parseExpr(); expect(')'); expect(';'); return {k:'print',e,nl:m.v==='println',line:t.line};
+    }
+    if(t.k==='id'&&(PRIM.includes(t.v))&&peek(1).k==='id'){
+      next(); const name=ident('Variablenname'); let init=null; if(is('=')){next();init=parseExpr();} expect(';'); return {k:'decl',type:t.v,name,init,line:t.line};
+    }
+    if(is('this')&&is('.',1)&&peek(2).k==='id'&&(is('=',3)||is('+=',3)||is('-=',3))){ next();next(); const nm=next().v; const op=next().v; const e=parseExpr(); expect(';'); return {k:'asg',target:nm,thisOnly:true,op,e,line:t.line}; }
+    if(t.k==='id'&&!KEYWORDS.has(t.v)){
+      if(is('=',1)||is('+=',1)||is('-=',1)){ next(); const op=next().v; const e=parseExpr(); expect(';'); return {k:'asg',target:t.v,op,e,line:t.line}; }
+      if(is('++',1)||is('--',1)){ next(); const op=next().v; expect(';'); return {k:'asg',target:t.v,op:op==='++'?'+=':'-=',e:{k:'lit',type:'int',v:1,line:t.line},line:t.line}; }
+    }
+    const e=parseExpr();
+    if(e.k!=='call'&&e.k!=='mcall') throw JErr(t.line,'not a statement','Diese Zeile tut nichts. Eine Anweisung ist z.B. eine Zuweisung (x = 5;), ein return oder ein Methodenaufruf.','Fehlt vielleicht ein = oder das Wort return?');
+    expect(';'); return {k:'expr',e,line:t.line};
+  }
+  function bin(sub,ops){ return function(){ let l=sub(); while(ops.some(o=>is(o))){ const op=next(); const r=sub(); l={k:'bin',op:op.v,l,r,line:op.line}; } return l; }; }
+  function parseUnary(){ if(is('!')||is('-')){ const op=next(); return {k:'un',op:op.v,e:parseUnary(),line:op.line}; } return parsePostfix(); }
+  const parseMul=bin(parseUnary,['*','/','%']), parseAdd=bin(parseMul,['+','-']), parseRel=bin(parseAdd,['<','>','<=','>=']),
+        parseEq=bin(parseRel,['==','!=']), parseAnd=bin(parseEq,['&&']), parseOr=bin(parseAnd,['||']);
+  function parseExpr(){ return parseOr(); }
+  function args(){ expect('('); const a=[]; if(is(')')){next();return a;} while(true){ a.push(parseExpr()); if(is(',')){next();continue;} expect(')'); return a; } }
+  function parsePostfix(){
+    let e=parsePrimary();
+    while(is('.')){ next(); const t=peek(); const nm=ident('Methodenname'); if(!is('(')) throw JErr(t.line,"'(' expected",'Nach dem Punkt erwartet Java hier einen Methodenaufruf mit Klammern.','Beispiel: name.length()'); e={k:'mcall',obj:e,name:nm,args:args(),line:t.line}; }
+    return e;
+  }
+  function parsePrimary(){
+    const t=peek();
+    if(t.k==='int') {next();return {k:'lit',type:'int',v:t.v,line:t.line};}
+    if(t.k==='dbl') {next();return {k:'lit',type:'double',v:t.v,line:t.line};}
+    if(t.k==='str') {next();return {k:'lit',type:'String',v:t.v,line:t.line};}
+    if(t.k==='chr') {next();return {k:'lit',type:'char',v:t.v,line:t.line};}
+    if(is('true')||is('false')){next();return {k:'lit',type:'boolean',v:t.v==='true',line:t.line};}
+    if(is('null')){next();return {k:'lit',type:'null',v:null,line:t.line};}
+    if(is('(')){next();const e=parseExpr();expect(')');return e;}
+    if(is('this')){ next(); expect('.'); const nm=ident('Name'); if(is('(')) return {k:'call',name:nm,args:args(),line:t.line}; return {k:'var',name:nm,thisOnly:true,line:t.line}; }
+    if(is('new')) throw JErr(t.line,'new wird hier nicht unterstützt','Objekte erzeugst du in diesem Übungs-BlueJ über das Menü der Klasse (antippen → new …).','');
+    if(t.k==='id'&&!KEYWORDS.has(t.v)){ next(); if(is('(')) return {k:'call',name:t.v,args:args(),line:t.line}; return {k:'var',name:t.v,line:t.line}; }
+    if(t.k==='eof') throw eofErr();
+    if(t.k==='id'&&t.v==='True'||t.v==='False') throw JErr(t.line,'cannot find symbol - variable '+t.v,'true und false schreibt man in Java klein.','Schreib '+t.v.toLowerCase());
+    throw JErr(t.line,'illegal start of expression','Hier fehlt ein Wert (z.B. eine Zahl, ein Text in " " oder ein Name).','Schau, ob etwas doppelt ist oder etwas fehlt.');
+  }
+  return {parseClass,parseExpr,atEnd:()=>peek().k==='eof',peek};
+}
+
+/* ---------- Typprüfung ---------- */
+const NUM=t=>t==='int'||t==='double'||t==='char';
+function assignable(to,from){ return to===from||(to==='double'&&(from==='int'||from==='char'))||(to==='int'&&from==='char')||(to==='String'&&from==='null'); }
+function typeMismatch(line,to,from){
+  let fix='';
+  if(to==='boolean'&&from==='String') fix='true und false schreibt man OHNE Anführungszeichen.';
+  else if(to==='int'&&from==='double') fix='Eine Kommazahl passt nicht in int. Nimm double oder eine ganze Zahl.';
+  else if(to==='String'&&NUM(from)) fix='Text gehört in Anführungszeichen, z.B. "Hallo".';
+  else if(NUM(to)&&from==='String') fix='Zahlen schreibt man OHNE Anführungszeichen.';
+  else if(to==='String'&&from==='char') fix='Für Text nimm doppelte Anführungszeichen " ".';
+  else if(from==='void') fix='Diese Methode gibt nichts zurück (void). Du kannst ihr Ergebnis nicht speichern.';
+  return JErr(line,'incompatible types: '+from+' cannot be converted to '+to,'Du willst einen Wert vom Typ '+from+' dort speichern, wo ein '+to+' hingehört. Das passt nicht zusammen.',fix);
+}
+function badType(t,line){
+  const l=t.toLowerCase(); let s=null;
+  if(l==='string'||l==='text') s='String'; else if(['int','double','boolean','char'].includes(l)) s=l; else if(l==='integer'||l==='zahl') s='int (ganze Zahl) oder double (Kommazahl)'; else if(l==='bool'||l==='wahrheitswert') s='boolean';
+  return JErr(line,'cannot find symbol - class '+t,'Java kennt den Datentyp „'+t+'“ nicht.',s?'Meintest du '+s+'? Groß- und Kleinschreibung zählt!':'Datentypen, die du nutzen kannst: int, double, boolean, char, String.');
+}
+function Scope(parent){ return {vars:new Map(),parent}; }
+function lookup(sc,n){ for(let s=sc;s;s=s.parent){ if(s.vars.has(n)) return s.vars.get(n); } return undefined; }
+function knownNames(sc,C){ const a=[]; for(let s=sc;s;s=s.parent) a.push(...s.vars.keys()); C.methods.forEach(m=>a.push(m.name)); return a; }
+const STRM={length:[[],'int'],charAt:[['int'],'char'],toUpperCase:[[],'String'],toLowerCase:[[],'String'],trim:[[],'String'],equals:[['any'],'boolean'],contains:[['String'],'boolean'],indexOf:[['String'],'int'],substring:[['int'],'String']};
+
+function checkClass(C){
+  const seen=new Set();
+  C.fields.forEach(f=>{
+    if(!PRIM.includes(f.type)) throw badType(f.type,f.line);
+    if(seen.has(f.name)) throw JErr(f.line,'variable '+f.name+' is already defined in class '+C.name,'Das Attribut „'+f.name+'“ gibt es zweimal.','Lösch eine der beiden Zeilen.');
+    seen.add(f.name);
+  });
+  const fsc=Scope(null); C.fields.forEach(f=>fsc.vars.set(f.name,f.type));
+  C.fields.forEach(f=>{ if(f.init){ const t=typeOf(f.init,fsc,C); if(!assignable(f.type,t)) throw typeMismatch(f.line,f.type,t);} });
+  const ms=new Set();
+  C.methods.forEach(m=>{
+    if(m.ret!=='void'&&!PRIM.includes(m.ret)) throw badType(m.ret,m.line);
+    if(ms.has(m.name)) throw JErr(m.line,'method '+m.name+' is already defined in class '+C.name,'Die Methode „'+m.name+'“ gibt es zweimal.','Lösch eine davon oder gib ihr einen anderen Namen.');
+    ms.add(m.name);
+  });
+  const checkParams=ps=>{ const s=new Set(); ps.forEach(p=>{ if(!PRIM.includes(p.type)) throw badType(p.type,p.line); if(s.has(p.name)) throw JErr(p.line,'variable '+p.name+' is already defined','Zwei Parameter heißen gleich.','Gib jedem Parameter einen eigenen Namen.'); s.add(p.name);}); };
+  C.ctors.forEach(c=>{ checkParams(c.params); const sc=Scope(fsc); c.params.forEach(p=>sc.vars.set(p.name,p.type)); checkStmt(c.body,sc,C,'void',true); });
+  C.methods.forEach(m=>{
+    checkParams(m.params); const sc=Scope(fsc); m.params.forEach(p=>sc.vars.set(p.name,p.type));
+    checkStmt(m.body,sc,C,m.ret,false);
+    if(m.ret!=='void'&&!returns(m.body)) throw JErr(m.body.endLine,'missing return statement','Die Methode '+m.name+' verspricht, einen '+m.ret+' zurückzugeben (so steht es in ihrem Kopf). Aber am Ende fehlt das return.','Schreib vor die schließende } der Methode z.B.: return '+(C.fields.find(f=>f.type===m.ret)||{name:'…'}).name+';');
+  });
+}
+function returns(s){ if(!s) return false; if(s.k==='ret') return true; if(s.k==='block') return s.st.some(returns); if(s.k==='if') return returns(s.a)&&returns(s.b); return false; }
+function checkStmt(s,sc,C,ret,isCtor){
+  switch(s.k){
+    case 'block':{ const inner=Scope(sc); s.st.forEach(x=>checkStmt(x,inner,C,ret,isCtor)); break; }
+    case 'empty': break;
+    case 'decl':{ if(s.init){ const t=typeOf(s.init,sc,C); if(!assignable(s.type,t)) throw typeMismatch(s.line,s.type,t);} if(sc.vars.has(s.name)) throw JErr(s.line,'variable '+s.name+' is already defined','Die Variable '+s.name+' gibt es hier schon.',''); sc.vars.set(s.name,s.type); break; }
+    case 'asg':{
+      const tt=s.thisOnly?C.fields.find(f=>f.name===s.target)?.type:lookup(sc,s.target);
+      if(!tt) throw notFound(s.target,s.line,sc,C);
+      const et=typeOf(s.e,sc,C); s.ttype=tt;
+      if(s.op==='='){ if(!assignable(tt,et)) throw typeMismatch(s.line,tt,et); }
+      else { if(tt==='String'&&s.op==='+=') break; if(!NUM(tt)||!NUM(et)) throw JErr(s.line,"bad operand types for binary operator '"+s.op[0]+"'",'Rechnen geht nur mit Zahlen.',''); }
+      break;
+    }
+    case 'ret':{
+      if(isCtor){ if(s.e) throw JErr(s.line,'incompatible types: unexpected return value','Ein Konstruktor gibt nie etwas zurück.','Lass das return weg.'); break; }
+      if(ret==='void'){ if(s.e) throw JErr(s.line,'incompatible types: unexpected return value','Diese Methode ist void, also gibt sie NICHTS zurück. Trotzdem steht hier return mit einem Wert.','Entweder das return weglassen, oder im Methodenkopf void durch den passenden Typ ersetzen (z.B. int).'); break; }
+      if(!s.e) throw JErr(s.line,'missing return value','Hinter return fehlt der Wert, der zurückgegeben werden soll.','Beispiel: return name;');
+      const t=typeOf(s.e,sc,C); if(!assignable(ret,t)) throw typeMismatch(s.line,ret,t); break;
+    }
+    case 'if': case 'while':{ const t=typeOf(s.c,sc,C); if(t!=='boolean') throw JErr(s.line,'incompatible types: '+t+' cannot be converted to boolean','In die Klammer von '+s.k+' gehört eine Bedingung, die wahr oder falsch ist.','Vergleichen geht mit ==, <, > …'); checkStmt(s.a,sc,C,ret,isCtor); if(s.b) checkStmt(s.b,sc,C,ret,isCtor); break; }
+    case 'print': if(s.e){ s.etype=typeOf(s.e,sc,C); if(s.etype==='void') throw typeMismatch(s.line,'String','void'); } break;
+    case 'expr': typeOf(s.e,sc,C); break;
+  }
+}
+function notFound(n,line,sc,C){
+  const m=knownNames(sc,C).find(k=>k.toLowerCase()===n.toLowerCase());
+  return JErr(line,'cannot find symbol - variable '+n,'Java kennt „'+n+'“ nicht.',m?'Meintest du „'+m+'“? Groß- und Kleinschreibung zählt!':'Hast du dich vertippt? Oder fehlt das Attribut oben in der Klasse?');
+}
+function typeOf(e,sc,C){
+  let t;
+  switch(e.k){
+    case 'lit': t=e.type; break;
+    case 'var': t=e.thisOnly?C.fields.find(f=>f.name===e.name)?.type:lookup(sc,e.name); if(!t) throw notFound(e.name,e.line,sc,C); break;
+    case 'call':{
+      const m=C.methods.find(x=>x.name===e.name);
+      if(!m){ const c=C.methods.find(x=>x.name.toLowerCase()===e.name.toLowerCase()); throw JErr(e.line,'cannot find symbol - method '+e.name+'()','Eine Methode „'+e.name+'“ gibt es in dieser Klasse nicht.',c?'Meintest du '+c.name+'?':''); }
+      if(m.params.length!==e.args.length) throw JErr(e.line,'method '+m.name+' in class '+C.name+' cannot be applied to given types','Die Methode '+m.name+' braucht '+m.params.length+' Parameter, du gibst '+e.args.length+'.','');
+      e.args.forEach((a,i)=>{const at=typeOf(a,sc,C); if(!assignable(m.params[i].type,at)) throw typeMismatch(e.line,m.params[i].type,at);});
+      t=m.ret; break;
+    }
+    case 'mcall':{
+      const ot=typeOf(e.obj,sc,C);
+      if(ot!=='String') throw JErr(e.line,ot+' cannot be dereferenced','Methoden mit Punkt kannst du hier nur bei Texten (String) aufrufen. '+ot+' ist ein primitiver Datentyp ohne Methoden (Arbeitsblatt 1).','');
+      const sig=STRM[e.name]; if(!sig) throw JErr(e.line,'cannot find symbol - method '+e.name,'Diese String-Methode kennt das Übungs-BlueJ nicht.','Bekannt: length, charAt, toUpperCase, toLowerCase, equals, contains, indexOf, substring, trim');
+      e.args.forEach(a=>typeOf(a,sc,C)); t=sig[1]; break;
+    }
+    case 'un':{ const it=typeOf(e.e,sc,C); if(e.op==='!'){ if(it!=='boolean') throw JErr(e.line,"bad operand type for unary operator '!'",'! (nicht) geht nur mit true/false.',''); t='boolean'; } else { if(!NUM(it)) throw JErr(e.line,"bad operand type for unary operator '-'",'Minus geht nur mit Zahlen.',''); t=it==='double'?'double':'int'; } break; }
+    case 'bin':{
+      const a=typeOf(e.l,sc,C), b=typeOf(e.r,sc,C); e.lt=a; e.rt=b; const op=e.op;
+      const bad=()=>JErr(e.line,"bad operand types for binary operator '"+op+"'",'Mit '+a+' und '+b+' geht '+op+' nicht.',op==='+'?'Zusammenhängen mit + geht nur, wenn einer der beiden ein String ist.':'');
+      if(op==='+'&&(a==='String'||b==='String')){ if(a==='void'||b==='void') throw bad(); t='String'; }
+      else if(['+','-','*','/','%'].includes(op)){ if(!NUM(a)||!NUM(b)) throw bad(); t=(a==='double'||b==='double')?'double':'int'; }
+      else if(['<','>','<=','>='].includes(op)){ if(!NUM(a)||!NUM(b)) throw bad(); t='boolean'; }
+      else if(op==='=='||op==='!='){ t='boolean'; }
+      else { if(a!=='boolean'||b!=='boolean') throw bad(); t='boolean'; }
+      break;
+    }
+  }
+  e.type=t; return t;
+}
+
+/* ---------- Übersetzen ---------- */
+function compileSource(src,clsName){ const P=makeParser(lex(src)); const C=P.parseClass(clsName); checkClass(C); return C; }
+
+/* ---------- Interpreter ---------- */
+const DEF={int:0,double:0,boolean:false,char:'\u0000',String:null};
+function fmt(v,t){ if(v===null||v===undefined) return 'null'; if(t==='double'){ return Number.isInteger(v)?v.toFixed(1):String(v);} return String(v); }
+function show(v,t){ if(t==='String') return v===null?'null':'"'+v+'"'; if(t==='char') return "'"+v+"'"; return fmt(v,t); }
+const toNum=(v,t)=>t==='char'?v.charCodeAt(0):v;
+function coerce(v,t){ if((t==='int'||t==='double')&&typeof v==='string') return v.charCodeAt(0); return v; }
+let depth=0;
+function invoke(obj,m,args){
+  if(++depth>150){depth=0;throw RtErr('java.lang.StackOverflowError','Die Methode ruft sich immer wieder selbst auf, ohne aufzuhören.');}
+  const sc=Scope(null); m.params.forEach((p,i)=>sc.vars.set(p.name,coerce(args[i],p.type)));
+  try{ exec(m.body,{obj,sc}); } catch(r){ if(r&&r.ret){depth--;return r.v;} depth--; throw r; }
+  depth--; return undefined;
+}
+function setVar(ctx,name,v,thisOnly){
+  if(!thisOnly) for(let s=ctx.sc;s;s=s.parent){ if(s.vars.has(name)){ s.vars.set(name,v); return; } }
+  ctx.obj.fields[name]=v;
+}
+function getVar(ctx,name,thisOnly){
+  if(!thisOnly) for(let s=ctx.sc;s;s=s.parent){ if(s.vars.has(name)) return s.vars.get(name); }
+  return ctx.obj.fields[name];
+}
+function exec(s,ctx){
+  switch(s.k){
+    case 'block':{ const c={obj:ctx.obj,sc:Scope(ctx.sc),loop:ctx.loop}; s.st.forEach(x=>exec(x,c)); break; }
+    case 'decl': ctx.sc.vars.set(s.name,s.init?coerce(ev(s.init,ctx),s.type):DEF[s.type]); break;
+    case 'asg':{
+      const v=ev(s.e,ctx);
+      if(s.op==='=') setVar(ctx,s.target,coerce(v,s.ttype),s.thisOnly);
+      else { const old=getVar(ctx,s.target,s.thisOnly); let nv;
+        if(s.ttype==='String') nv=fmt(old,'String')+fmt(v,s.e.type); else { nv=s.op==='+='?toNum(old,s.ttype)+toNum(v,s.e.type):toNum(old,s.ttype)-toNum(v,s.e.type); if(s.ttype==='int') nv=Math.trunc(nv); }
+        setVar(ctx,s.target,nv,s.thisOnly); }
+      break;
+    }
+    case 'ret': throw {ret:true,v:s.e?ev(s.e,ctx):undefined};
+    case 'if': if(ev(s.c,ctx)) exec(s.a,ctx); else if(s.b) exec(s.b,ctx); break;
+    case 'while':{ let n=0; while(ev(s.c,ctx)){ if(++n>20000) throw RtErr('Endlosschleife','Die while-Schleife hört nicht auf. Die Bedingung wird nie falsch.'); exec(s.a,ctx);} break; }
+    case 'print': termWrite((s.e?fmt(ev(s.e,ctx),s.etype):'')+(s.nl?'\n':'')); break;
+    case 'expr': ev(s.e,ctx); break;
+  }
+}
+function ev(e,ctx){
+  switch(e.k){
+    case 'lit': return e.v;
+    case 'var': return getVar(ctx,e.name,e.thisOnly);
+    case 'call':{ const m=ctx.obj.cls.methods.find(x=>x.name===e.name); return invoke(ctx.obj,m,e.args.map(a=>ev(a,ctx))); }
+    case 'mcall':{
+      const s=ev(e.obj,ctx); const a=e.args.map(x=>ev(x,ctx));
+      if(s===null) throw RtErr('java.lang.NullPointerException','Die Variable enthält noch keinen Text (sie ist null). Auf „nichts“ kann man keine Methode aufrufen. Hat der Konstruktor ihr einen Wert gegeben?');
+      switch(e.name){
+        case 'length': return s.length;
+        case 'charAt': if(a[0]<0||a[0]>=s.length) throw RtErr('java.lang.StringIndexOutOfBoundsException','Position '+a[0]+' gibt es in diesem Text nicht. Der Text hat '+s.length+' Zeichen, also Positionen 0 bis '+(s.length-1)+'.'); return s[a[0]];
+        case 'toUpperCase': return s.toUpperCase();
+        case 'toLowerCase': return s.toLowerCase();
+        case 'trim': return s.trim();
+        case 'equals': return s===a[0];
+        case 'contains': return s.includes(a[0]);
+        case 'indexOf': return s.indexOf(a[0]);
+        case 'substring': if(a[0]<0||a[0]>s.length) throw RtErr('java.lang.StringIndexOutOfBoundsException','Position '+a[0]+' gibt es in diesem Text nicht.'); return s.substring(a[0]);
+      } return null;
+    }
+    case 'un':{ const v=ev(e.e,ctx); return e.op==='!'?!v:(e.type==='int'?Math.trunc(-toNum(v,e.e.type)):-toNum(v,e.e.type)); }
+    case 'bin':{
+      const op=e.op;
+      if(op==='&&') return ev(e.l,ctx)&&ev(e.r,ctx);
+      if(op==='||') return ev(e.l,ctx)||ev(e.r,ctx);
+      const l=ev(e.l,ctx), r=ev(e.r,ctx);
+      if(op==='+'&&e.type==='String') return fmt(l,e.lt)+fmt(r,e.rt);
+      if(op==='=='||op==='!='){ const eq=(NUM(e.lt)&&NUM(e.rt))?toNum(l,e.lt)===toNum(r,e.rt):l===r; return op==='=='?eq:!eq; }
+      const a=toNum(l,e.lt), b=toNum(r,e.rt);
+      switch(op){
+        case '+': return e.type==='int'?Math.trunc(a+b):a+b;
+        case '-': return e.type==='int'?Math.trunc(a-b):a-b;
+        case '*': return e.type==='int'?Math.trunc(a*b):a*b;
+        case '/': if(e.type==='int'){ if(b===0) throw RtErr('java.lang.ArithmeticException: / by zero','Durch 0 teilen geht nicht.'); return Math.trunc(a/b);} return a/b;
+        case '%': return a%b;
+        case '<': return a<b; case '>': return a>b; case '<=': return a<=b; case '>=': return a>=b;
+      }
+    }
+  }
+}
+function parseArg(text,type){
+  const src=text.replace(/[“”„]/g,'"').replace(/[‘’‚]/g,"'").trim();
+  if(!src) return {err:'Hier fehlt noch ein Wert.'};
+  let e;
+  try{ const P=makeParser(lex(src)); e=P.parseExpr(); if(!P.atEnd()) return {err:'Das verstehe ich nicht als '+type+'-Wert.'+(type==='double'&&/,/.test(src)?' Kommazahlen mit Punkt schreiben: 5.7':'')}; }
+  catch(x){ return {err:(type==='String'?'Text muss in Anführungszeichen stehen, z.B. "Hubert"':'Das verstehe ich nicht als '+type+'-Wert.')}; }
+  const Cd={name:'',fields:[],methods:[]};
+  let t; try{ t=typeOf(e,Scope(null),Cd); }catch(x){ return {err: type==='String'?'Text muss in Anführungszeichen stehen, z.B. "'+src+'"':(type==='boolean'?'Schreib true oder false (klein, ohne Anführungszeichen).':'„'+src+'“ ist kein '+type+'-Wert.')}; }
+  if(!assignable(type,t)){
+    let h='Das passt nicht zum Typ '+type+'.';
+    if(type==='String') h='Text muss in Anführungszeichen stehen, z.B. "'+src.replace(/"/g,'')+'"';
+    else if(t==='String') h=type==='boolean'?'true/false ohne Anführungszeichen schreiben.':'Zahlen ohne Anführungszeichen schreiben.';
+    else if(type==='int'&&t==='double') h='int ist nur für ganze Zahlen. Keine Kommazahl eingeben.';
+    return {err:h};
+  }
+  try{ return {v:coerce(ev(e,{obj:{fields:{}},sc:Scope(null)}),type)}; }catch(x){ return {err:'Das kann ich nicht berechnen.'}; }
+}
+
+/* =========================================================
+   Projekt-Zustand
+   ========================================================= */
+const KEY='uebungsBlueJ_v1';
+let P={classes:[],objects:[],mission:'frosch',steps:{frosch:0,scooter:0},term:''};
+let events=[], stepStart=0, stepDone=false, editorFor=null, solOpen=false;
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify({classes:P.classes.map(c=>({name:c.name,code:c.code,ok:!c.dirty&&!!c.ast})),mission:P.mission,steps:P.steps})); }catch(e){} }
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(!s) return;
+  P.mission=s.mission||'frosch'; P.steps=Object.assign({frosch:0,scooter:0},s.steps||{});
+  P.classes=(s.classes||[]).map(c=>{ const o={name:c.name,code:c.code,dirty:true,ast:null}; if(c.ok){ try{o.ast=compileSource(c.code,c.name);o.dirty=false;}catch(e){} } return o; });
+}catch(e){} }
+const cls=n=>P.classes.find(c=>c.name===n);
+function log(type,data){ events.push(Object.assign({type},data||{})); setTimeout(guideCheck,0); }
+function status(t){ document.getElementById('status').textContent=t; }
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function template(n){ return `/**
+ * Beschreiben Sie hier die Klasse ${n}.
+ * 
+ * @author (Ihr Name) 
+ * @version (eine Versionsnummer oder ein Datum)
+ */
+public class ${n}
+{
+    // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
+    private int x;
+
+    /**
+     * Konstruktor für Objekte der Klasse ${n}
+     */
+    public ${n}()
+    {
+        // Instanzvariable initialisieren
+        x = 0;
+    }
+
+    /**
+     * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
+     * 
+     * @param  y    ein Beispielparameter für eine Methode
+     * @return        die Summe aus x und y
+     */
+    public int beispielMethode(int y)
+    {
+        // tragen Sie hier den Code ein
+        return x + y;
+    }
+}
+`; }
+function cleanCode(n){ return `/**
+ * Die Klasse ${n}.
+ * 
+ * @author (dein Name)
+ * @version (Datum)
+ */
+public class ${n}
+{
+    
+}
+`; }
+
+/* =========================================================
+   BlueJ-Oberfläche
+   ========================================================= */
+function renderProject(){
+  const cv=document.getElementById('canvas');
+  cv.innerHTML = P.classes.length ? P.classes.map(c=>`<div class="cls${c.dirty?' dirty':''}" data-name="${esc(c.name)}" tabindex="0" role="button" aria-label="Klasse ${esc(c.name)}${c.dirty?', nicht übersetzt':''}"><div class="cn">${esc(c.name)}</div><div class="cb"></div></div>`).join('')
+    : `<p class="empty">Hier ist noch keine Klasse. Klassen legst du mit „Neue Klasse…“ an.</p>`;
+  cv.querySelectorAll('.cls').forEach(el=>{
+    const open=e=>{ e.stopPropagation(); classMenu(el.dataset.name,e); };
+    el.addEventListener('click',open);
+    el.addEventListener('contextmenu',e=>{e.preventDefault();open(e);});
+    el.addEventListener('dblclick',e=>{e.stopPropagation();hideMenu();openEditor(el.dataset.name);});
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();open(e);} });
+  });
+  const b=document.getElementById('bench');
+  b.innerHTML = `<span class="bench-label">Objektleiste</span>` + (P.objects.length ? P.objects.map(o=>`<div class="obj" data-id="${esc(o.name)}" tabindex="0" role="button"><u>${esc(o.name)}:</u><br>${esc(o.cls.name)}</div>`).join('') : `<span class="hint">Hier erscheinen deine Objekte.</span>`);
+  b.querySelectorAll('.obj').forEach(el=>{
+    const open=e=>{ e.stopPropagation(); objMenu(el.dataset.id,e); };
+    el.addEventListener('click',open);
+    el.addEventListener('contextmenu',e=>{e.preventDefault();open(e);});
+    el.addEventListener('dblclick',e=>{e.stopPropagation();hideMenu();inspect(P.objects.find(o=>o.name===el.dataset.id));});
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();open(e);} });
+  });
+}
+const menu=document.getElementById('menu');
+function showMenu(items,e){
+  menu.innerHTML=items.map((it,i)=>it==='-'?'<hr>':it.note?`<div class="note">${it.note}</div>`:`<button role="menuitem" data-i="${i}">${it.html}</button>`).join('');
+  menu.hidden=false;
+  const r=(e.currentTarget||e.target).getBoundingClientRect();
+  let x=(e.clientX||r.left+20), y=(e.clientY||r.bottom);
+  const mw=menu.offsetWidth, mh=menu.offsetHeight;
+  x=Math.min(x,window.innerWidth-mw-8); y=Math.min(y,window.innerHeight-mh-8);
+  menu.style.left=Math.max(8,x)+'px'; menu.style.top=Math.max(8,y)+'px';
+  menu.querySelectorAll('button').forEach(b=>b.onclick=()=>{ hideMenu(); items[b.dataset.i].fn(); });
+  const f=menu.querySelector('button'); if(f) f.focus({preventScroll:true});
+}
+function hideMenu(){ menu.hidden=true; }
+document.addEventListener('click',e=>{ if(!menu.contains(e.target)) hideMenu(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') hideMenu(); });
+
+const sig=(ps)=>ps.map(p=>p.type+' '+p.name).join(', ');
+function classMenu(name,e){
+  const c=cls(name); const items=[];
+  if(c.ast && !c.dirty){
+    const ctors=c.ast.ctors.length?c.ast.ctors:[{params:[],mod:'public',body:{k:'block',st:[]},doc:null,dflt:true}];
+    ctors.filter(k=>k.mod!=='private').forEach(k=>items.push({html:`<span class="sig">new ${esc(name)}(${esc(sig(k.params))})</span>`,fn:()=>newObjectDialog(c,k)}));
+    items.push('-');
+  } else items.push({note:'Die Klasse ist gestreift = noch nicht übersetzt.<br>Erst übersetzen, dann kannst du Objekte erzeugen.'},'-');
+  items.push({html:'Bearbeiten (Open Editor)',fn:()=>openEditor(name)});
+  items.push({html:'Übersetzen (Compile)',fn:()=>compileClass(name,true)});
+  items.push({html:'Entfernen (Remove)',fn:()=>confirmDialog('Klasse entfernen?','Die Klasse '+esc(name)+' und ihr Code werden gelöscht.',()=>{ P.classes=P.classes.filter(x=>x!==c); P.objects=P.objects.filter(o=>o.cls.name!==name); if(editorFor===name) closeEditor(); save(); renderProject(); })});
+  showMenu(items,e);
+}
+function objMenu(id,e){
+  const o=P.objects.find(x=>x.name===id); if(!o) return;
+  const items=o.cls.methods.filter(m=>m.mod!=='private').map(m=>({html:`<span class="sig">${esc(m.ret)} ${esc(m.name)}(${esc(sig(m.params))})</span>`,fn:()=>callDialog(o,m)}));
+  if(!items.length) items.push({note:'Diese Klasse hat noch keine öffentlichen Methoden.'});
+  items.push('-',{html:'Inspizieren (Inspect)',fn:()=>inspect(o)},{html:'Entfernen (Remove)',fn:()=>{ P.objects=P.objects.filter(x=>x!==o); renderProject(); }});
+  showMenu(items,e);
+}
+
+/* ---------- Dialoge ---------- */
+const host=document.getElementById('dlgHost');
+function dialog({title,body,fields=[],okLabel='OK',cancel=true,onOk}){
+  host.innerHTML=`<div class="dlg-back"><div class="win dlg" role="dialog" aria-label="${esc(title)}">
+    <div class="wt"><span>${esc(title)}</span></div>
+    <div class="db">${body||''}${fields.map((f,i)=>`<label for="df${i}">${f.label}</label><input id="df${i}" value="${esc(f.value||'')}" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="${esc(f.ph||'')}">${f.help?`<div class="help">${f.help}</div>`:''}`).join('')}<div class="derr" id="derr" aria-live="assertive"></div></div>
+    <div class="dbtns">${cancel?'<button class="btn" id="dCancel">Abbrechen</button>':''}<button class="btn primary" id="dOk">${okLabel}</button></div>
+  </div></div>`;
+  const ins=[...host.querySelectorAll('input')];
+  ins.forEach(i=>i.addEventListener('input',()=>{ const v=i.value.replace(/[“”„]/g,'"').replace(/[‘’‚]/g,"'"); if(v!==i.value){const p=i.selectionStart;i.value=v;i.setSelectionRange(p,p);} }));
+  const ok=()=>{ const err=onOk?onOk(ins.map(i=>i.value)):null; if(err){ document.getElementById('derr').textContent=err; return; } host.innerHTML=''; };
+  document.getElementById('dOk').onclick=ok;
+  ins.forEach(i=>i.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();ok();} }));
+  const c=document.getElementById('dCancel'); if(c) c.onclick=()=>host.innerHTML='';
+  (ins[0]||document.getElementById('dOk')).focus();
+}
+function confirmDialog(t,b,fn){ dialog({title:t,body:`<p>${b}</p>`,okLabel:'Ja',onOk:()=>{fn();return null;}}); }
+function docText(d){ return d?d.split('\n').map(l=>l.replace(/^\s*\*\s?/,'')).join('\n').trim():''; }
+function argFields(ps){ return ps.map(p=>({label:`<span class="ty">${esc(p.type)}</span> ${esc(p.name)}`,ph:p.type==='String'?'"Text"':p.type==='boolean'?'true oder false':p.type==='double'?'z.B. 5.7':p.type==='char'?"'A'":'z.B. 42',
+  help:p.type==='String'?'Text <b>mit</b> Anführungszeichen, z.B. "Hubert"':p.type==='boolean'?'true (wahr) oder false (falsch), ohne Anführungszeichen':p.type==='int'?'Ganze Zahl, ohne Anführungszeichen':p.type==='double'?'Kommazahl mit Punkt':''})); }
+function newObjectDialog(c,k){
+  let n=1; const base=c.name.charAt(0).toLowerCase()+c.name.slice(1); while(P.objects.some(o=>o.name===base+n)) n++;
+  const d=docText(k.doc);
+  dialog({title:'BlueJ: Objekt erzeugen',body:`${d?`<div class="doc">${esc(d)}</div>`:''}<div class="sig">new ${esc(c.name)}(${esc(sig(k.params))})</div>`,
+    fields:[{label:'Name des Objekts (Name of Instance)',value:base+n,help:'Klein anfangen, keine Leerzeichen.'}].concat(argFields(k.params)),
+    onOk:vals=>{
+      const nm=vals[0].trim();
+      if(!/^[A-Za-z_][A-Za-z0-9_]*$/.test(nm)) return 'Der Objektname darf nur Buchstaben, Ziffern und _ enthalten, ohne Leerzeichen und Umlaute.';
+      if(P.objects.some(o=>o.name===nm)) return 'Ein Objekt mit dem Namen „'+nm+'“ gibt es schon.';
+      const args=[]; for(let i=0;i<k.params.length;i++){ const r=parseArg(vals[i+1],k.params[i].type); if(r.err) return k.params[i].name+': '+r.err; args.push(r.v); }
+      const obj={name:nm,cls:c.ast,fields:{}};
+      try{
+        c.ast.fields.forEach(f=>obj.fields[f.name]=DEF[f.type]);
+        const ctx={obj,sc:Scope(null)}; c.ast.fields.forEach(f=>{ if(f.init) obj.fields[f.name]=coerce(ev(f.init,ctx),f.type); });
+        if(!k.dflt) invoke(obj,k,args);
+      }catch(x){ setTimeout(()=>runtimeError(x),0); return null; }
+      P.objects.push(obj); renderProject(); status('Objekt „'+nm+'“ erzeugt.');
+      log('objCreated',{cls:c.name,name:nm,obj});
+      return null;
+    }});
+}
+function callDialog(o,m){
+  const run=args=>{
+    let r; try{ r=invoke(o,m,args); }catch(x){ runtimeError(x); return; }
+    log('call',{obj:o,name:m.name,args,ret:r});
+    if(m.ret==='void'){ status(o.name+'.'+m.name+'(…) ausgeführt. void = die Methode gibt nichts zurück.'); return; }
+    dialog({title:'BlueJ: Methodenergebnis (Method Result)',cancel:false,okLabel:'Schließen',body:`<p class="sig">${esc(m.ret)} ${esc(o.name)}.${esc(m.name)}(${args.map((a,i)=>esc(show(a,m.params[i].type))).join(', ')})</p><p>returned <span class="sig">${esc(m.ret)} ${esc(show(r,m.ret))}</span></p><p class="help">„returned“ heißt: Die Methode hat diesen Wert <b>zurückgegeben</b>. Das ist der Rückgabewert (Arbeitsblatt 3).</p>`});
+  };
+  if(!m.params.length){ run([]); return; }
+  const d=docText(m.doc);
+  dialog({title:'BlueJ: Methodenaufruf (Method Call)',body:`${d?`<div class="doc">${esc(d)}</div>`:''}<div class="sig">${esc(m.ret)} ${esc(m.name)}(${esc(sig(m.params))})</div>`,fields:argFields(m.params),
+    onOk:vals=>{ const args=[]; for(let i=0;i<m.params.length;i++){ const r=parseArg(vals[i],m.params[i].type); if(r.err) return m.params[i].name+': '+r.err; args.push(r.v);} setTimeout(()=>run(args),0); return null; }});
+}
+function runtimeError(x){
+  if(!x||!x.rterr){ console.error(x); x=RtErr('Fehler','Etwas ist schiefgelaufen.'); }
+  dialog({title:'Fehler beim Ausführen',cancel:false,okLabel:'Schließen',body:`<p class="sig" style="color:var(--err)">${esc(x.name)}</p><p>${esc(x.de)}</p><p class="help">Der Code war richtig geschrieben (er ließ sich übersetzen), aber beim Ausführen ist etwas passiert, das nicht geht.</p>`});
+}
+function inspect(o){
+  if(!o) return;
+  const fs=o.cls.fields;
+  dialog({title:'BlueJ: Objektinspektor – '+o.name+' : '+o.cls.name,cancel:false,okLabel:'Schließen',
+    body:`<table class="insp">${fs.length?fs.map(f=>`<tr><td>${esc(f.mod||'')} ${esc(f.type)} ${esc(f.name)}</td><td>${esc(show(o.fields[f.name],f.type))}</td></tr>`).join(''):'<tr><td>Dieses Objekt hat keine Attribute.</td></tr>'}</table>
+    <p class="help" style="margin-top:12px">Das Gleiche als Objektdiagramm, wie im Unterricht:</p>
+    <div class="odiag"><div class="t">${esc(o.name)} : ${esc(o.cls.name)}</div>${fs.map(f=>`<div class="r">${esc(f.name)} = ${esc(show(o.fields[f.name],f.type))}</div>`).join('')}</div>`});
+  log('inspect',{obj:o});
+}
+
+/* ---------- Neue Klasse / Übersetzen ---------- */
+document.getElementById('btnNew').onclick=()=>{
+  dialog({title:'BlueJ: Neue Klasse erzeugen (Create New Class)',body:'<p class="help">Klassennamen beginnen mit einem Großbuchstaben. Keine Leerzeichen, keine Umlaute.</p>',fields:[{label:'Name der Klasse (Class Name)',ph:'z.B. Frosch'}],
+    onOk:v=>{ const n=v[0].trim();
+      if(!n) return 'Gib einen Namen ein.';
+      if(!/^[A-Za-z_][A-Za-z0-9_]*$/.test(n)) return 'Nur Buchstaben und Ziffern, keine Leerzeichen und keine Umlaute (ä → ae).';
+      if(!/^[A-Z]/.test(n)) return 'Klassennamen beginnen mit einem GROSSEN Buchstaben: '+n.charAt(0).toUpperCase()+n.slice(1);
+      if(cls(n)) return 'Eine Klasse „'+n+'“ gibt es schon.';
+      P.classes.push({name:n,code:template(n),dirty:true,ast:null}); save(); renderProject(); status('Klasse „'+n+'“ angelegt. Sie ist gestreift, weil sie noch nicht übersetzt ist.');
+      log('classCreated',{name:n}); return null; }});
+};
+document.getElementById('btnCompileAll').onclick=()=>{
+  if(!P.classes.length){ status('Es gibt noch keine Klasse zum Übersetzen.'); return; }
+  for(const c of P.classes){ if(c.dirty){ if(!compileClass(c.name,false)){ openEditor(c.name); showCompileResult(c.name); return; } } }
+  status('Alle Klassen übersetzt.');
+};
+let lastErr={};
+function compileClass(name,openOnErr){
+  const c=cls(name); if(!c) return false;
+  if(editorFor===name) c.code=edText.value;
+  try{
+    c.ast=compileSource(c.code,name); c.dirty=false; lastErr[name]=null;
+    const before=P.objects.length; P.objects=P.objects.filter(o=>o.cls.name!==name);
+    save(); renderProject();
+    status('Klasse „'+name+'“ übersetzt – keine Syntaxfehler.'+(before>P.objects.length?' Alte Objekte dieser Klasse wurden gelöscht (der Bauplan hat sich geändert).':''));
+    log('compileOk',{name,ast:c.ast});
+    if(editorFor===name) showCompileResult(name);
+    return true;
+  }catch(x){
+    if(!x.jerr){ console.error(x); x=JErr(1,'Fehler','Unerwarteter Fehler beim Übersetzen.',''); }
+    c.dirty=true; c.ast=null; lastErr[name]=x; save(); renderProject();
+    status('Fehler in Klasse „'+name+'“, Zeile '+x.line+'.');
+    log('compileErr',{name,err:x});
+    if(openOnErr&&editorFor!==name) openEditor(name);
+    if(editorFor===name) showCompileResult(name);
+    return false;
+  }
+}
+
+/* ---------- Editor ---------- */
+const edWin=document.getElementById('editor'), edText=document.getElementById('edText'), gutter=document.getElementById('gutter'), edHl=document.getElementById('edHl'), edStatus=document.getElementById('edStatus');
+function openEditor(name){
+  const c=cls(name); if(!c) return;
+  editorFor=name; edWin.hidden=false; document.getElementById('edTitle').textContent=name+' – Editor';
+  edText.value=c.code; updGutter(); edHl.style.display='none';
+  edStatus.className='ed-status'; edStatus.innerHTML=c.dirty?'Tipp: Wenn du fertig bist, tippe oben auf <b>Übersetzen</b>.':'Klasse ist übersetzt.';
+  if(lastErr[name]) showCompileResult(name);
+  log('editorOpened',{name});
+}
+function closeEditor(){ if(editorFor){ const c=cls(editorFor); if(c) c.code=edText.value; save(); } editorFor=null; edWin.hidden=true; }
+document.getElementById('edClose').onclick=closeEditor;
+document.getElementById('edCompile').onclick=()=>{ if(editorFor) compileClass(editorFor,false); };
+function updGutter(){
+  const n=edText.value.split('\n').length; const bad=editorFor&&lastErr[editorFor]?lastErr[editorFor].line:0;
+  gutter.innerHTML=Array.from({length:n},(_,i)=>`<div class="gl${i+1===bad?' bad':''}">${i+1}</div>`).join('');
+  syncScroll();
+}
+function syncScroll(){ gutter.style.transform=`translateY(${-edText.scrollTop}px)`; const e=editorFor&&lastErr[editorFor]; if(e){ edHl.style.display='block'; edHl.style.top=(8+(e.line-1)*22-edText.scrollTop)+'px'; } else edHl.style.display='none'; }
+edText.addEventListener('scroll',syncScroll);
+let saveT=null;
+edText.addEventListener('input',()=>{
+  const v=edText.value.replace(/[“”„]/g,'"').replace(/[‘’‚]/g,"'");
+  if(v!==edText.value){ const s=edText.selectionStart,e2=edText.selectionEnd; edText.value=v; edText.setSelectionRange(s,e2); }
+  const c=cls(editorFor); if(c){ c.code=edText.value; if(!c.dirty){ c.dirty=true; renderProject(); } }
+  updGutter(); clearTimeout(saveT); saveT=setTimeout(()=>{save();guideCheck();},400);
+});
+function insertText(t){ const s=edText.selectionStart,e=edText.selectionEnd; edText.setRangeText(t,s,e,'end'); edText.dispatchEvent(new Event('input')); edText.focus(); }
+edText.addEventListener('keydown',e=>{
+  if(e.key==='Tab'){ e.preventDefault(); insertText('    '); }
+  else if(e.key==='Enter'){
+    e.preventDefault(); const s=edText.selectionStart, before=edText.value.slice(0,s);
+    const line=before.slice(before.lastIndexOf('\n')+1); let ind=(line.match(/^ */)||[''])[0];
+    if(/\{\s*$/.test(line)) ind+='    ';
+    insertText('\n'+ind);
+  } else if(e.key==='}'){
+    const s=edText.selectionStart, before=edText.value.slice(0,s), line=before.slice(before.lastIndexOf('\n')+1);
+    if(/^ {4,}$/.test(line)){ e.preventDefault(); edText.setRangeText('}',s-4,s,'end'); edText.dispatchEvent(new Event('input')); }
+  }
+});
+document.getElementById('edSyms').innerHTML=['{','}','(',')',';','=','"','+','.'].map(c=>`<button type="button" data-c="${esc(c)}">${esc(c)}</button>`).join('')+'<span>Zeichen einfügen</span>';
+document.querySelectorAll('#edSyms button').forEach(b=>{ b.addEventListener('mousedown',e=>e.preventDefault()); b.onclick=()=>insertText(b.dataset.c); });
+function showCompileResult(name){
+  const e=lastErr[name];
+  if(!e){ edStatus.className='ed-status ok'; edStatus.innerHTML='<b>Klasse übersetzt – keine Syntaxfehler</b> (Class compiled – no syntax errors). Das Kästchen ist nicht mehr gestreift.'; updGutter(); return; }
+  edStatus.className='ed-status err';
+  edStatus.innerHTML=`<div>Zeile ${e.line}: <span class="em">${esc(e.msg)}</span></div><div class="de"><b>Das bedeutet:</b> ${esc(e.de)}</div>${e.fix?`<div class="de"><b>So reparierst du es:</b> ${esc(e.fix)}</div>`:''}<button class="linkbtn" id="goLine">Zu Zeile ${e.line} springen</button>`;
+  updGutter();
+  document.getElementById('goLine').onclick=()=>{ const ls=edText.value.split('\n'); let pos=0; for(let i=0;i<e.line-1&&i<ls.length;i++) pos+=ls[i].length+1; const end=pos+(ls[e.line-1]||'').length; edText.focus(); edText.setSelectionRange(pos,end); edText.scrollTop=Math.max(0,(e.line-4)*22); syncScroll(); };
+}
+
+/* ---------- Terminal ---------- */
+const term=document.getElementById('terminal'), termOut=document.getElementById('termOut');
+function termWrite(t){ term.hidden=false; termOut.textContent+=t; termOut.scrollTop=termOut.scrollHeight; log('print',{text:t}); }
+document.getElementById('btnTerm').onclick=()=>{ term.hidden=!term.hidden; };
+document.getElementById('termClear').onclick=()=>termOut.textContent='';
+document.getElementById('termClose').onclick=()=>term.hidden=true;
+
+/* =========================================================
+   Missionen (Anleitung)
+   ========================================================= */
+const ast=n=>{ const c=cls(n); return c&&!c.dirty&&c.ast?c.ast:null; };
+const hasField=(a,n,t)=>a&&a.fields.some(f=>f.name===n&&f.type===t);
+const hasCtor=(a,ts)=>a&&a.ctors.some(k=>k.params.length===ts.length&&k.params.every((p,i)=>p.type===ts[i]));
+const hasMethod=(a,n,r,ts)=>a&&a.methods.some(m=>m.name===n&&m.ret===r&&m.params.length===ts.length&&m.params.every((p,i)=>p.type===ts[i]));
+const evs=()=>events.slice(stepStart);
+const code=n=>(cls(n)||{}).code||'';
+const uml=(t,a,m)=>`<div class="uml"><div class="t">${t}</div><div class="s">${a.map(x=>`<div class="r">${esc(x)}</div>`).join('')}</div><div class="s">${m.map(x=>`<div class="r">${esc(x)}</div>`).join('')}</div></div>`;
+const FROSCH_UML=uml('Frosch',['- name : String','- groesse : int'],['+ Frosch(pName : String, pGroesse : int)','+ getName() : String','+ getGroesse() : int','+ setGroesse(pGroesse : int) : void']);
+const SCOOTER_UML=uml('Scooter',['- scooterID : int','- gemietet : boolean'],['+ Scooter(pScooterID : int)','+ getScooterID() : int','+ getGemietet() : boolean','+ setGemietet(pGemietet : boolean) : void']);
+
+const F_ATTR=`    private String name;
+    private int groesse;`;
+const F_CTOR=`    public Frosch(String pName, int pGroesse)
+    {
+        name = pName;
+        groesse = pGroesse;
+    }`;
+const F_METH=`    public String getName()
+    {
+        return name;
+    }
+
+    public int getGroesse()
+    {
+        return groesse;
+    }
+
+    public void setGroesse(int pGroesse)
+    {
+        groesse = pGroesse;
+    }`;
+const F_QUAK=`    public void quaken()
+    {
+        System.out.println("Quak! Ich heiße " + name);
+    }`;
+const froschSol=lvl=>{ const parts=[F_ATTR]; if(lvl>=2) parts.push(F_CTOR); if(lvl>=3) parts.push(F_METH); if(lvl>=4) parts.push(F_QUAK);
+  return `/**\n * Die Klasse Frosch.\n * \n * @author (dein Name)\n * @version (Datum)\n */\npublic class Frosch\n{\n${parts.join('\n\n')}\n}\n`; };
+const S_ATTR=`    private int scooterID;
+    private boolean gemietet;`;
+const S_CTOR=`    public Scooter(int pScooterID)
+    {
+        scooterID = pScooterID;
+        gemietet = false;
+    }`;
+const S_METH=`    public int getScooterID()
+    {
+        return scooterID;
+    }
+
+    public boolean getGemietet()
+    {
+        return gemietet;
+    }
+
+    public void setGemietet(boolean pGemietet)
+    {
+        gemietet = pGemietet;
+    }`;
+const scooterSol=lvl=>{ const parts=[S_ATTR]; if(lvl>=2) parts.push(S_CTOR); if(lvl>=3) parts.push(S_METH);
+  return `/**\n * Ein Scooter, der über die Citrus-App ausgeliehen werden kann.\n * \n * @author (dein Name)\n * @version (Datum)\n */\npublic class Scooter\n{\n${parts.join('\n\n')}\n}\n`; };
+const REAL='<p class="g-real"><b>Im echten BlueJ:</b> ';
+
+const MISSIONS={
+frosch:[
+ {title:'Willkommen im Übungs-BlueJ',
+  body:`<p>Rechts siehst du ein nachgebautes BlueJ. Es funktioniert fast wie das echte Programm in der Schule, nur einfacher. <b>Du kannst hier nichts kaputt machen.</b></p>
+  <p>Das Fenster hat drei Bereiche:</p>
+  <ul><li><b>Werkzeugleiste</b> (links im Fenster): Knöpfe wie „Neue Klasse…“ und „Übersetzen“. Im echten BlueJ stehen sie oft auf Englisch („New Class…“, „Compile“). Deshalb steht das Englische hier klein darunter.</li>
+  <li><b>Klassenbereich</b> (die große weiße Fläche): Hier erscheint jede Klasse als Kästchen.</li>
+  <li><b>Objektleiste</b> (grau, ganz unten): Hier landen die Objekte, die du aus einer Klasse baust.</li></ul>
+  <p><b>Der Plan:</b> Wir bauen zusammen die Klasse <b>Frosch</b> nach diesem Diagramm, erzeugen echte Frösche und probieren ihre Methoden aus.</p>${FROSCH_UML}
+  <p>Hier links steht immer genau, was du als Nächstes tun sollst. Wenn du es geschafft hast, wird es grün.</p>`,
+  show:'#bluej',manual:'Okay, los geht\'s'},
+ {title:'Schritt 1: Eine neue Klasse anlegen',
+  body:`<p>Eine Klasse ist der <b>Bauplan</b> (wie eine Backform, Arbeitsblatt 4). Zuerst legen wir den Bauplan für Frösche an.</p>
+  <ol><li>Tippe rechts in der Werkzeugleiste auf <b>Neue Klasse…</b></li><li>Es geht ein Fenster auf. Schreib als Namen: <code>Frosch</code></li><li>Tippe auf <b>OK</b>.</li></ol>
+  <p class="g-where"><b>Regeln für Klassennamen:</b> großer Anfangsbuchstabe, keine Leerzeichen, keine Umlaute (ä → ae).</p>
+  ${REAL}Genau so. Dort gibt es im Fenster noch eine Auswahl „Class type“ – da lässt du einfach „Class“ angeklickt.</p>`,
+  show:'#btnNew',check:()=>!!cls('Frosch'),
+  done:'Das beige Kästchen „Frosch“ ist deine Klasse. Es ist <b>gestreift</b>. Streifen heißen in BlueJ: Die Klasse ist <b>noch nicht übersetzt</b>. Java hat den Code also noch nicht geprüft. Das kommt gleich.'},
+ {title:'Schritt 2: Den Editor öffnen',
+  body:`<p>Der Code einer Klasse steht im <b>Editor</b>. So öffnest du ihn:</p>
+  <ol><li>Tippe auf das Kästchen <b>Frosch</b>. Ein Menü geht auf.</li><li>Tippe auf <b>Bearbeiten (Open Editor)</b>.</li></ol>
+  <p>Doppelt antippen geht auch.</p>
+  ${REAL}Doppelklick auf die Klasse, oder Rechtsklick → „Open Editor“. Im echten BlueJ geht der Editor als eigenes Fenster auf.</p>`,
+  show:'.cls[data-name="Frosch"]',check:()=>evs().some(e=>e.type==='editorOpened'&&e.name==='Frosch')||editorFor==='Frosch',
+  done:'Das ist der Editor. Hier schreibst du deinen Java-Code. Wie du siehst, hat BlueJ schon Code hineingeschrieben. Den schauen wir uns jetzt an.'},
+ {title:'Schritt 3: Was steht da schon drin?',
+  body:`<p>BlueJ schreibt in jede neue Klasse eine <b>Vorlage</b> mit Beispielcode. Im echten BlueJ sieht sie fast genauso aus. Von oben nach unten:</p>
+  <ul><li><code>/** … */</code> ganz oben: Das ist ein <b>Kommentar</b> mit der Dokumentation der Klasse (@author, @version – Arbeitsblatt 6). Java ignoriert Kommentare. Sie sind nur für Menschen.</li>
+  <li><code>public class Frosch</code>: der <b>Kopf der Klasse</b>. Die <code>{</code> darunter öffnet die Klasse, die allerletzte <code>}</code> schließt sie. <b>Alles gehört dazwischen.</b></li>
+  <li>Zeilen mit <code>//</code>: auch Kommentare.</li>
+  <li><code>private int x;</code>: ein Beispiel-<b>Attribut</b>.</li>
+  <li><code>public Frosch()</code> mit <code>{ … }</code>: ein Beispiel-<b>Konstruktor</b>.</li>
+  <li><code>public int beispielMethode(int y)</code>: eine Beispiel-<b>Methode</b>.</li></ul>
+  <p>Den Beispielcode brauchen wir nicht. Tippe auf den Knopf unten, dann lösche ich ihn für dich. Übrig bleiben nur der Kommentar, der Kopf der Klasse und die beiden Klammern.</p>
+  ${REAL}Dort musst du den Beispielcode selbst markieren und löschen: Markier alles von <code>// Instanzvariablen</code> bis zur vorletzten <code>}</code> und drück die Löschtaste. Die allerletzte <code>}</code> muss stehen bleiben!</p>`,
+  action:{label:'Beispielcode für mich löschen',fn:()=>{ const c=cls('Frosch'); if(!c) return; c.code=cleanCode('Frosch'); c.dirty=true; if(editorFor==='Frosch'){edText.value=c.code;updGutter();} else openEditor('Frosch'); save(); renderProject(); guideCheck(); }},
+  check:()=>cls('Frosch')&&!/beispielMethode/.test(code('Frosch'))&&!/int\s+x\s*;/.test(code('Frosch')),
+  done:'Jetzt ist die Klasse leer: nur Kommentar, Kopf und die zwei Klammern <code>{</code> <code>}</code>. Die leere Zeile dazwischen ist der Platz für deinen Code.'},
+ {title:'Schritt 4: Die Attribute schreiben',
+  body:`<p>Attribute sind die Eigenschaften, also das, was jeder Frosch <b>hat</b>. Im Diagramm stehen:</p><pre>- name : String
+- groesse : int</pre>
+  <p>In Java drehst du die Reihenfolge um: <b>erst private</b> (das Minus), <b>dann der Datentyp</b>, <b>dann der Name</b>, und am Ende ein <b>;</b></p>
+  <pre>${esc(F_ATTR)}</pre>
+  <p class="g-where"><b>Wohin?</b> Tippe im Editor in die leere Zeile zwischen <code>{</code> und <code>}</code> und schreib dort die zwei Zeilen. Nach der ersten Zeile drückst du Enter für eine neue Zeile.</p>
+  <p><b>Achte auf:</b> <code>String</code> groß, <code>int</code> klein, <code>;</code> am Ende. Das <code>;</code> findest du auch unten im Editor als Taste.</p>`,
+  show:'#edText',sol:()=>froschSol(1),
+  check:()=>/private\s+String\s+name\s*;/.test(code('Frosch'))&&/private\s+int\s+groesse\s*;/.test(code('Frosch')),
+  done:'Die zwei Attribute stehen im Code. Aber Java hat noch nicht geprüft, ob du alles richtig geschrieben hast.'},
+ {title:'Schritt 5: Übersetzen (Compile)',
+  body:`<p><b>Übersetzen</b> heißt: Java liest deinen Code und prüft, ob alles richtig geschrieben ist. Erst danach kann man mit der Klasse arbeiten.</p>
+  <p>Tippe im Editor oben auf <b>Übersetzen (Compile)</b>.</p>
+  <ul><li>Wenn alles stimmt, steht unten im Editor grün: <b>„keine Syntaxfehler“</b>.</li><li>Wenn nicht, zeigt BlueJ dir die Zeile mit dem Fehler rot an, und darunter steht auf Deutsch, was los ist. <b>Keine Panik, Fehler sind völlig normal.</b></li></ul>
+  ${REAL}Der Knopf heißt „Compile“ und ist oben links im Editor-Fenster. Die Meldung steht unten im Editor, nur auf Englisch.</p>`,
+  show:'#edCompile',sol:()=>froschSol(1),
+  check:()=>{const a=ast('Frosch');return hasField(a,'name','String')&&hasField(a,'groesse','int');},
+  done:'Geschafft! Unten steht „keine Syntaxfehler“ und das Frosch-Kästchen ist nicht mehr gestreift. Deine Klasse ist übersetzt.'},
+ {title:'Schritt 6: Einen Fehler absichtlich machen',
+  body:`<p>Jeder macht Fehler, auch Profis. Wichtig ist nur, dass du die Fehlermeldung lesen kannst. Wir bauen jetzt absichtlich einen ein:</p>
+  <ol><li>Lösch im Editor das <code>;</code> hinter <code>name</code>.</li><li>Tippe auf <b>Übersetzen</b>.</li></ol>
+  <p>Dann schau, was unten im Editor steht.</p>`,
+  show:'#edText',check:()=>evs().some(e=>e.type==='compileErr'&&e.name==='Frosch'),
+  done:'Siehst du? Die Zeilennummer ist rot, und unten steht <code>\';\' expected</code>. Das ist Englisch und heißt: „Hier wurde ein ; erwartet.“ Darunter erklärt dir das Übungs-BlueJ auf Deutsch, was los ist. Im echten BlueJ steht nur der englische Satz. Die wichtigsten Meldungen findest du am Ende auf dem Spickzettel.'},
+ {title:'Schritt 7: Den Fehler reparieren',
+  body:`<p>Setz das <code>;</code> wieder hinter <code>name</code> und tippe auf <b>Übersetzen</b>.</p>
+  <p>So läuft Programmieren eigentlich immer: <b>schreiben → übersetzen → Fehlermeldung lesen → reparieren → wieder übersetzen.</b></p>`,
+  show:'#edText',sol:()=>froschSol(1),check:()=>evs().some(e=>e.type==='compileOk'&&e.name==='Frosch'),
+  done:'Fehler behoben, alles wieder grün.'},
+ {title:'Schritt 8: Der Konstruktor',
+  body:`<p>Der <b>Konstruktor</b> baut neue Frosch-Objekte und gibt ihren Attributen Startwerte (Arbeitsblatt 4). Im Diagramm:</p><pre>+ Frosch(pName : String, pGroesse : int)</pre>
+  <p>In Java wird daraus:</p><pre>${esc(F_CTOR)}</pre>
+  <p class="g-where"><b>Wohin?</b> Unter die beiden Attribute, aber noch <b>über</b> die allerletzte <code>}</code> der Klasse. Mach nach <code>private int groesse;</code> eine leere Zeile und schreib dann den Konstruktor.</p>
+  <p><b>Was bedeutet das?</b></p>
+  <ul><li><code>public Frosch(…)</code>: Der Konstruktor heißt genau wie die Klasse und hat keinen Rückgabetyp.</li>
+  <li><code>String pName, int pGroesse</code>: Das sind die <b>Parameter</b>. Wer einen Frosch baut, muss einen Namen und eine Größe mitgeben.</li>
+  <li><code>name = pName;</code> heißt: „Speichere im Attribut name, was in pName steht.“</li></ul>
+  <p>Der Editor rückt nach <code>{</code> automatisch ein. Danach: <b>Übersetzen</b>.</p>`,
+  show:'#edText',sol:()=>froschSol(2),check:()=>hasCtor(ast('Frosch'),['String','int']),
+  done:'Dein Bauplan kann jetzt echte Frösche herstellen. Das probieren wir sofort aus.'},
+ {title:'Schritt 9: Ein Objekt erzeugen',
+  body:`<p>Jetzt wird aus dem Bauplan ein echter Frosch, ein <b>Objekt</b>.</p>
+  <ol><li>Schließ den Editor mit <b>Schließen</b> (oben im Editor).</li>
+  <li>Tippe auf das Kästchen <b>Frosch</b>. Oben im Menü steht jetzt <code>new Frosch(String pName, int pGroesse)</code>. Das ist dein Konstruktor! Tippe darauf.</li>
+  <li><b>Name des Objekts:</b> schreib <code>hubert</code> (klein).</li>
+  <li><b>pName:</b> schreib <code>"Hubert"</code> <b>mit Anführungszeichen</b>, weil es ein Text (String) ist.</li>
+  <li><b>pGroesse:</b> schreib <code>50</code> <b>ohne</b> Anführungszeichen, weil es eine Zahl ist.</li>
+  <li>Tippe auf <b>OK</b>.</li></ol>
+  ${REAL}Rechtsklick auf die Klasse → „new Frosch(…)“. Die Anführungszeichen bei Text sind dort genauso Pflicht.</p>`,
+  show:'.cls[data-name="Frosch"]',check:()=>P.objects.some(o=>o.cls.name==='Frosch'),
+  done:'Unten in der Objektleiste ist jetzt ein rotes Kästchen. Das ist dein Objekt! Dort steht <b>Objektname: Klasse</b>, genau wie im Objektdiagramm aus dem Unterricht.'},
+ {title:'Schritt 10: In das Objekt hineinschauen',
+  body:`<p>Was steckt jetzt in deinem Frosch? Das zeigt der <b>Objektinspektor</b>.</p>
+  <ol><li>Tippe unten auf das rote Objekt.</li><li>Wähle <b>Inspizieren (Inspect)</b>.</li></ol>
+  ${REAL}Rechtsklick auf das Objekt → „Inspect“, oder Doppelklick auf das Objekt.</p>`,
+  show:'#bench .obj',check:()=>evs().some(e=>e.type==='inspect'),
+  done:'Du siehst jedes Attribut mit seinem Wert: <code>name = "Hubert"</code>, <code>groesse = 50</code>. Darunter steht dasselbe als Objektdiagramm. Der Konstruktor hat also die Parameter richtig in die Attribute gespeichert.'},
+ {title:'Schritt 11: get- und set-Methoden schreiben',
+  body:`<p>Die Attribute sind <code>private</code>. Von außen kommt man nur über Methoden dran (Arbeitsblatt 5). Im Diagramm:</p><pre>+ getName() : String
++ getGroesse() : int
++ setGroesse(pGroesse : int) : void</pre>
+  <p>Öffne den Editor (Frosch antippen → Bearbeiten). Schreib diese drei Methoden:</p><pre>${esc(F_METH)}</pre>
+  <p class="g-where"><b>Wohin?</b> Unter den Konstruktor (unter seine <code>}</code>), aber noch <b>über</b> die allerletzte <code>}</code> der Klasse. Zwischen die Methoden je eine leere Zeile.</p>
+  <ul><li>Bei <b>get</b> steht vorne der Typ, der zurückkommt (String oder int), und drinnen <code>return</code>.</li><li>Bei <b>set</b> steht <code>void</code>, weil nichts zurückkommt. Der neue Wert kommt als Parameter.</li></ul>
+  <p>Dann <b>Übersetzen</b>. Achtung: Beim Übersetzen löscht BlueJ alle alten Objekte, weil sich der Bauplan geändert hat. Dein Frosch unten verschwindet also. Das ist normal!</p>`,
+  show:'.cls[data-name="Frosch"]',sol:()=>froschSol(3),
+  check:()=>{const a=ast('Frosch');return hasMethod(a,'getName','String',[])&&hasMethod(a,'getGroesse','int',[])&&hasMethod(a,'setGroesse','void',['int']);},
+  done:'Drei Methoden fertig und übersetzt. Jetzt probieren wir sie an einem Frosch aus.'},
+ {title:'Schritt 12: Eine get-Methode aufrufen',
+  body:`<ol><li>Schließ den Editor.</li><li>Erzeuge wieder einen Frosch: Frosch antippen → <code>new Frosch(…)</code>. Name: <code>hubert</code>, pName: <code>"Hubert"</code>, pGroesse: <code>50</code>.</li>
+  <li>Tippe unten auf das Objekt. Im Menü stehen jetzt <b>deine Methoden</b>! Wähle <code>String getName()</code>.</li></ol>
+  ${REAL}Rechtsklick auf das Objekt, dann steht die Methode im Menü.</p>`,
+  show:'.cls[data-name="Frosch"]',check:()=>evs().some(e=>e.type==='call'&&e.name==='getName'),
+  done:'Das Fenster zeigt <b>returned String "Hubert"</b>. Die Methode hat also den Namen <b>zurückgegeben</b>. Das ist der Rückgabewert (Arbeitsblatt 3). Weil im Methodenkopf String steht, kommt ein Text zurück.'},
+ {title:'Schritt 13: Mit set etwas ändern',
+  body:`<ol><li>Tippe auf dein Objekt → <code>void setGroesse(int pGroesse)</code>.</li>
+  <li>Gib <code>80</code> ein und tippe OK. Es kommt kein Ergebnisfenster, denn <code>void</code> heißt: Die Methode gibt nichts zurück.</li>
+  <li>Hat es geklappt? Tippe auf dein Objekt → <code>int getGroesse()</code>. (Oder schau mit Inspizieren nach.)</li></ol>`,
+  show:'#bench .obj',check:()=>{const e=evs(); const i=e.findIndex(x=>x.type==='call'&&x.name==='setGroesse'); return i>=0&&e.slice(i+1).some(x=>(x.type==='call'&&x.name==='getGroesse')||x.type==='inspect');},
+  done:'Vorher war die Größe 50, jetzt ist sie so, wie du sie gesetzt hast. Die set-Methode hat das Attribut geändert. Genau dafür sind set-Methoden da.'},
+ {title:'Schritt 14 (Bonus): Der Frosch spricht',
+  body:`<p>Mit <code>System.out.println(…)</code> kann ein Programm Text anzeigen. Der Text erscheint in einem Fenster namens <b>Terminal</b>.</p>
+  <p>Schreib diese Methode in den Editor, wieder <b>unter die anderen Methoden</b> und <b>über die letzte }</b>:</p><pre>${esc(F_QUAK)}</pre>
+  <p>Das <code>+</code> hängt zwei Texte zusammen (Arbeitsblatt 7).</p>
+  <p>Dann: Übersetzen → Editor schließen → neuen Frosch erzeugen → auf den Frosch tippen → <code>void quaken()</code>.</p>`,
+  show:'.cls[data-name="Frosch"]',sol:()=>froschSol(4),check:()=>evs().some(e=>e.type==='print'),
+  done:'Das Terminal zeigt den Satz. Das + hat „Quak! Ich heiße “ und den Inhalt von name zusammengehängt.'},
+ {title:'Mission 1 geschafft!',
+  body:`<p>Du hast eine komplette Klasse selbst geschrieben, übersetzt, Objekte erzeugt und Methoden aufgerufen. <b>Genau das macht ihr im Unterricht in BlueJ.</b></p>
+  <p><b>Spickzettel: die häufigsten Fehlermeldungen</b></p>
+  <table class="cheat">
+  <tr><td>';' expected</td><td>Semikolon fehlt (oft am Ende der Zeile darüber)</td></tr>
+  <tr><td>cannot find symbol</td><td>Java kennt einen Namen nicht: vertippt? Groß/Klein?</td></tr>
+  <tr><td>incompatible types</td><td>Der Wert passt nicht zum Datentyp</td></tr>
+  <tr><td>missing return statement</td><td>In einer Methode mit Rückgabetyp fehlt das return</td></tr>
+  <tr><td>reached end of file while parsing</td><td>Eine } fehlt</td></tr>
+  <tr><td>'{' expected / ')' expected</td><td>Eine Klammer fehlt</td></tr>
+  <tr><td>return type required</td><td>Vor dem Methodennamen fehlt void, int, String …</td></tr>
+  <tr><td>&lt;identifier&gt; expected</td><td>Reihenfolge falsch, z.B. Doppelpunkt aus dem Diagramm übernommen</td></tr>
+  </table>
+  <p>Jetzt kannst du die Klasse <b>Scooter</b> aus dem Unterricht allein bauen.</p>`,
+  final:'scooter'}
+],
+scooter:[
+ {title:'Mission 2: Die Klasse Scooter',
+  body:`<p>Jetzt baust du die Scooter-Klasse aus dem Unterricht. Diesmal mit weniger Hilfe, aber du kannst jederzeit die Lösung anschauen.</p>${SCOOTER_UML}
+  <p>Das Vorgehen kennst du schon: <b>Klasse anlegen → Beispielcode löschen → Code schreiben → übersetzen → Objekte ausprobieren.</b></p>`,
+  manual:'Los geht\'s'},
+ {title:'1. Klasse anlegen und aufräumen',
+  body:`<p>Leg eine neue Klasse <code>Scooter</code> an, öffne den Editor und lösch den Beispielcode.</p>${REAL}Beispielcode selbst markieren und löschen. Die letzte } bleibt stehen.</p>`,
+  show:'#btnNew',action:{label:'Beispielcode für mich löschen',fn:()=>{ const c=cls('Scooter'); if(!c){ status('Leg zuerst die Klasse Scooter an.'); return; } c.code=cleanCode('Scooter'); c.dirty=true; if(editorFor==='Scooter'){edText.value=c.code;updGutter();} else openEditor('Scooter'); save(); renderProject(); guideCheck(); }},
+  check:()=>cls('Scooter')&&!/beispielMethode/.test(code('Scooter'))&&!/int\s+x\s*;/.test(code('Scooter')),
+  done:'Die Klasse Scooter ist bereit.'},
+ {title:'2. Attribute',
+  body:`<p>Übersetze die Attribute aus dem Diagramm in Java und tippe auf <b>Übersetzen</b>.</p>${SCOOTER_UML}<p class="g-where">Erinnerung: private + Datentyp + Name + ;<br>„Wahr oder falsch“ ist der Datentyp <code>boolean</code>.</p>`,
+  show:'#edText',sol:()=>scooterSol(1),check:()=>{const a=ast('Scooter');return hasField(a,'scooterID','int')&&hasField(a,'gemietet','boolean');},
+  done:'Attribute übersetzt.'},
+ {title:'3. Konstruktor',
+  body:`<p>Schreib den Konstruktor <code>+ Scooter(pScooterID : int)</code> und übersetze.</p>
+  <p class="g-where"><b>Knifflig:</b> Für <code>gemietet</code> gibt es keinen Parameter. Jeder neue Scooter ist am Anfang <b>nicht</b> gemietet. Also setzt du im Konstruktor einen festen Wert: <code>gemietet = false;</code></p>`,
+  show:'#edText',sol:()=>scooterSol(2),check:()=>hasCtor(ast('Scooter'),['int']),done:'Konstruktor fertig.'},
+ {title:'4. get- und set-Methoden',
+  body:`<p>Schreib die drei Methoden aus dem Diagramm und übersetze.</p>${SCOOTER_UML}<p class="g-where">get: Rückgabetyp vorne, drinnen <code>return</code>.<br>set: <code>void</code>, der neue Wert kommt als Parameter.</p>`,
+  show:'#edText',sol:()=>scooterSol(3),
+  check:()=>{const a=ast('Scooter');return hasMethod(a,'getScooterID','int',[])&&hasMethod(a,'getGemietet','boolean',[])&&hasMethod(a,'setGemietet','void',['boolean']);},
+  done:'Die Klasse ist komplett.'},
+ {title:'5. Einen Scooter erzeugen',
+  body:`<p>Erzeuge ein Objekt <code>scooter01</code> mit der ID <code>7643</code>. Schau es dir dann mit <b>Inspizieren</b> an.</p><p>Vergleich es mit dem Objektdiagramm aus dem Unterricht: <code>scooterID = 7643</code>, <code>gemietet = false</code>.</p>`,
+  show:'.cls[data-name="Scooter"]',sol:()=>scooterSol(3),check:()=>P.objects.some(o=>o.cls.name==='Scooter'&&o.fields.scooterID===7643)&&evs().some(e=>e.type==='inspect'),
+  done:'Genau wie im Objektdiagramm: Die ID kam über den Parameter, gemietet ist false.'},
+ {title:'6. Den Scooter mieten',
+  body:`<p>Spiel die App nach: Jemand mietet den Scooter.</p><ol><li>Ruf <code>setGemietet</code> mit <code>true</code> auf.</li><li>Prüf mit <code>getGemietet()</code>, ob jetzt <code>true</code> zurückkommt.</li></ol>`,
+  show:'#bench .obj',sol:()=>scooterSol(3),check:()=>evs().some(e=>e.type==='call'&&e.name==='getGemietet'&&e.ret===true),
+  done:'Der Scooter ist gemietet. Genau das macht die Citrus-App im Hintergrund.'},
+ {title:'Mission 2 geschafft!',
+  body:`<p>Du hast die Scooter-Klasse <b>allein</b> vom Implementationsdiagramm bis zum fertigen, funktionierenden Code gebaut. Damit kannst du alle Begriffe aus dem Unterricht nicht nur erklären, sondern auch anwenden.</p>
+  <p><b>Übe weiter:</b> Leg eigene Klassen an, z.B. <code>Buch</code> (titel, verlag) oder <code>UhrDigital</code> (stunde, minute) aus dem Buch.</p>`}
+]};
+
+const guideEl=document.getElementById('guide');
+function renderGuide(){
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-current',b.dataset.m===P.mission?'true':'false'));
+  const M=MISSIONS[P.mission]; const i=Math.min(P.steps[P.mission],M.length-1); const s=M[i];
+  const pct=Math.round(i/(M.length-1)*100);
+  guideEl.innerHTML=`<div class="g-top"><span>${P.mission==='frosch'?'Mission 1: Frosch':'Mission 2: Scooter'}</span><span>${i+1} von ${M.length}</span></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <h2>${s.title}</h2>${s.body}
+    <div class="g-btns">
+      ${s.show?'<button class="btn" id="gShow">Zeig mir wo</button>':''}
+      ${s.action&&!stepDone?`<button class="btn" id="gAct">${s.action.label}</button>`:''}
+      ${s.manual?`<button class="btn primary" id="gManual">${s.manual}</button>`:''}
+      ${s.final?`<button class="btn primary" id="gFinal">Weiter zu Mission 2</button>`:''}
+    </div>
+    ${s.sol&&!stepDone?`<button class="linkbtn" id="gSolT">${solOpen?'Lösung verstecken':'Ich hänge fest – Lösung zeigen'}</button>${solOpen?`<div class="g-sol"><p class="small">So sollte dein ganzer Code jetzt aussehen:</p><pre>${esc(s.sol())}</pre><button class="btn" id="gSolUse">Meinen Code durch die Lösung ersetzen</button></div>`:''}`:''}
+    ${stepDone?`<div class="g-done"><b class="head">Super, geschafft!</b>${s.done||''}<br><button class="btn good" id="gNext" style="margin-top:10px">Weiter</button></div>`:''}
+    <div class="g-nav"><button class="linkbtn" id="gBack" ${i===0?'hidden':''}>← Schritt zurück</button><label class="jump">Springe zu: <select id="gJump">${M.map((x,k)=>`<option value="${k}" ${k===i?'selected':''}>${k+1}. ${esc(x.title.replace(/^Schritt \d+( \(Bonus\))?: /,'').replace(/^\d+\. /,''))}</option>`).join('')}</select></label><button class="linkbtn" id="gReset">Alles zurücksetzen</button></div>`;
+  const q=id=>document.getElementById(id);
+  q('gJump').onchange=e=>go(+e.target.value);
+  if(q('gShow')) q('gShow').onclick=()=>pulse(s.show);
+  if(q('gAct')) q('gAct').onclick=s.action.fn;
+  if(q('gManual')) q('gManual').onclick=()=>go(i+1);
+  if(q('gFinal')) q('gFinal').onclick=()=>switchMission('scooter');
+  if(q('gNext')) q('gNext').onclick=()=>go(i+1);
+  if(q('gBack')) q('gBack').onclick=()=>go(i-1);
+  if(q('gSolT')) q('gSolT').onclick=()=>{solOpen=!solOpen;renderGuide();};
+  if(q('gSolUse')) q('gSolUse').onclick=()=>{ const name=P.mission==='frosch'?'Frosch':'Scooter'; let c=cls(name); if(!c){ P.classes.push(c={name,code:'',dirty:true,ast:null}); }
+    c.code=s.sol(); c.dirty=true; if(editorFor===name){edText.value=c.code;updGutter();} else openEditor(name); save(); renderProject(); solOpen=false; renderGuide(); status('Code ersetzt. Jetzt noch Übersetzen!'); };
+  q('gReset').onclick=()=>confirmDialog('Alles zurücksetzen?','Alle Klassen, Objekte und dein Fortschritt werden gelöscht.',()=>{ try{localStorage.removeItem(KEY);}catch(e){} P={classes:[],objects:[],mission:'frosch',steps:{frosch:0,scooter:0}}; closeEditor(); term.hidden=true; termOut.textContent=''; events=[]; stepStart=0; stepDone=false; renderProject(); renderGuide(); });
+}
+function go(i){ const M=MISSIONS[P.mission]; P.steps[P.mission]=Math.max(0,Math.min(i,M.length-1)); stepStart=events.length; stepDone=false; solOpen=false; save(); renderGuide(); guideEl.scrollTop=0; if(window.innerWidth<=920) guideEl.scrollIntoView({behavior:'smooth',block:'start'}); guideCheck(); }
+function switchMission(m){ P.mission=m; stepStart=events.length; stepDone=false; solOpen=false; save(); renderGuide(); guideCheck(); window.scrollTo({top:0,behavior:'smooth'}); }
+function guideCheck(){ const M=MISSIONS[P.mission]; const s=M[P.steps[P.mission]]; if(!s||stepDone||!s.check) return; let ok=false; try{ok=s.check();}catch(e){} if(ok){ stepDone=true; renderGuide(); } }
+function pulse(sel){
+  const el=document.querySelector(sel);
+  if(!el){ status(sel==='#edText'||sel==='#edCompile'?'Der Editor ist gerade zu. Tippe auf die Klasse → Bearbeiten.':sel.includes('.obj')?'Es gibt noch kein Objekt. Tippe auf die Klasse → new …':'Das ist gerade nicht zu sehen.'); const b=document.getElementById('status'); b.classList.remove('pulse'); void b.offsetWidth; b.classList.add('pulse'); return; }
+  el.scrollIntoView({behavior:'smooth',block:'center'}); el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); setTimeout(()=>el.classList.remove('pulse'),3200);
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchMission(b.dataset.m));
+
+load(); renderProject(); renderGuide(); guideCheck();
+</script>
+</body>
+</html>
